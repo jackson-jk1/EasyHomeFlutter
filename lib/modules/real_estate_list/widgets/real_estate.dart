@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../Immobile.dart';
+import '../../../data/model/Immobile.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
@@ -9,7 +9,7 @@ class RealEstate extends StatelessWidget {
   const RealEstate({Key? key}) : super(key: key);
 
   Future<List<Immobile>> _getImmobiles() async {
-    http.Response response = await http.get(Uri.parse("https://4744-2804-f30-4000-653-6d72-fce5-4bc5-e097.sa.ngrok.io/Immobile"));
+    http.Response response = await http.get(Uri.parse("https://4f7a-2804-f30-4000-653-297d-7e22-8bb5-dce3.sa.ngrok.io/Immobile"));
 
     var dadosJson = json.decode(response.body);
 

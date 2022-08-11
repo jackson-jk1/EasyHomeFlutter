@@ -5,6 +5,8 @@ import 'package:easy_home/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'core/initial_binding.dart';
+
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
@@ -19,8 +21,10 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Easy Home',
-      initialRoute: AppRoutes.realEstateList,
+      smartManagement: SmartManagement.full,
+      initialBinding: InitialBinding(),
+      title: 'EasyHome',
+      initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
     );
   }
