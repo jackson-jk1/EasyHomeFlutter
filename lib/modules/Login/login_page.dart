@@ -9,6 +9,7 @@ class LoginPage extends GetWidget<LoginViewModel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: Obx(() {
         return
           SingleChildScrollView(
@@ -31,42 +32,195 @@ class LoginPage extends GetWidget<LoginViewModel> {
                         child: Column(
                           children: [
                             TextFormField(
-                              decoration: const InputDecoration(labelText: 'E-mail'),
+                                style: TextStyle(color: AppColors.white),
+                                controller: controller.emailController,
+                                textInputAction: TextInputAction.next,
+                                  decoration: const InputDecoration(labelText: 'E-mail',
+                                  filled: true,
+                                  fillColor: Color.fromRGBO(33, 39, 74,1.0),
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  border:OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                  ),
+                                   enabledBorder:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                  ),
+                                  focusedBorder:OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                ),
+                              ),
                               validator: (email) => controller.validateEmail(email),
-                              controller: controller.emailController,
                             ),
                             const SizedBox(
-                              height: 8,
+                              height: 16,
                             ),
                             TextFormField(
+                                textInputAction: TextInputAction.next,
+                                style: TextStyle(color: AppColors.white),
                                 decoration:
-                                const InputDecoration(labelText: 'Password'),
+                                const InputDecoration(labelText: 'Password',
+                                  filled: true, //<-- SEE HERE
+                                  fillColor: Color.fromRGBO(33, 39, 74,1.0),
+                                  labelStyle: TextStyle(color: Colors.white),
+                                  border:OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                  ),
+                                  enabledBorder:OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                  ),
+                                  focusedBorder:OutlineInputBorder(
+                                    borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                  ),),
+
                                 obscureText: true,
                                 validator: (password) => controller.validatePassword(password),
                                 controller: controller.passwordController
                             ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Visibility(
+
+                                visible: controller.switchLogin.value,
+                                child: TextFormField(
+                                    style: TextStyle(color: AppColors.white),
+                                    textInputAction: TextInputAction.next,
+                                    decoration: const InputDecoration(labelText: 'Password Confirm',
+                                      filled: true, //<-- SEE HERE
+                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      border:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),
+                                      enabledBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                      ),
+                                      focusedBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),),
+                                    obscureText: true,
+                                    validator: (Pconfirm) => controller.validatePassword(Pconfirm),
+                                    controller: controller.passwordConfirmController
+                                )
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Visibility(
+
+                                visible: controller.switchLogin.value,
+                                child: TextFormField(
+                                    style: TextStyle(color: AppColors.white),
+                                    textInputAction: TextInputAction.next,
+                                    decoration: const InputDecoration(labelText: 'Nome',
+                                      filled: true, //<-- SEE HERE
+                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      border:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),
+                                      enabledBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                      ),
+                                      focusedBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),),
+                                    validator: (Nome) => controller.validateName(Nome),
+                                    controller: controller.nomeController
+                                )
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
                             Visibility(
                                 visible: controller.switchLogin.value,
                                 child: TextFormField(
-                                  decoration: const InputDecoration(labelText: 'CellPhone'),
-                                  obscureText: true,
-                                  validator: (cellphone) => controller.validateCellPhone(cellphone),
-                                  controller: controller.passwordController
+                                  style: TextStyle(color: AppColors.white),
+                                  controller: controller.telefoneController,
+                                  textInputAction: TextInputAction.next,
+                                  decoration: const InputDecoration(labelText: 'Telefone',
+                                    filled: true, //<-- SEE HERE
+                                    fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    border:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                    ),
+                                    enabledBorder:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                    ),
+                                    focusedBorder:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                    ),
+
+                                  ),
+                                  validator: (Telefone) => controller.validateCellphone(Telefone),
                               )
                             ),
                             const SizedBox(
-                              height: 8,
+                              height: 16,
+                            ),
+                            Visibility(
+                                visible: controller.switchLogin.value,
+                                child: TextFormField(
+                                    style: TextStyle(color: AppColors.white),
+                                    textInputAction: TextInputAction.done,
+                                    decoration: const InputDecoration(labelText: 'Cpf',
+                                      filled: true, //<-- SEE HERE
+                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
+                                      labelStyle: TextStyle(color: Colors.white),
+                                      border:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),
+                                      enabledBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                      ),
+                                      focusedBorder:OutlineInputBorder(
+                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                      ),),
+                                    validator: (Cpf) => controller.validateCpf(Cpf),
+                                    controller: controller.cpfController
+                                )
+                            ),
+                            const SizedBox(
+                              height: 16,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Login'),
+                                const Text('Login',
+                                    style: TextStyle(color: Colors.white)),
+
                                 Switch(
                                   value: controller.switchLogin.value,
                                   onChanged: (_) => controller.changeSwitchLogin(),
                                 ),
-                                const Text('Sign Up')
+                                const Text('Sign Up',
+                                    style: TextStyle(color: Colors.white))
                               ],
                             ),
                             const SizedBox(

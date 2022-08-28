@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../data/model/login_model.dart';
@@ -16,29 +17,35 @@ class LoginViewModel extends GetxController {
   final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordConfirmController = TextEditingController();
+  final TextEditingController telefoneController = TextEditingController();
+  final TextEditingController nomeController = TextEditingController();
+  final TextEditingController cpfController = TextEditingController();
+
   RxBool switchLogin = false.obs;
 
   changeSwitchLogin() => switchLogin.toggle().value;
 
   String? validateEmail(String? email) {
-    if (email == null || email.isEmpty) return 'Field e-mail can\'t be empty';
+    if (email == null || email.isEmpty) return 'Campo Email não pode ser nulo';
 
     return null;
   }
 
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
-      return 'Field password can\'t be empty';
+      return 'Campo password não pode ser nulo';
     }
 
-    if (password.length < 6) return 'Password must be bigger than 5 characters';
+    if (password.length < 6) return 'Password muito pequena';
 
     return null;
   }
 
   validateForm() {
     if (formKey.currentState!.validate()) {
-      processLogin();
+      Get.offAllNamed(AppRoutes.realEstateList);
+      //processLogin();
     }
   }
 
@@ -60,7 +67,7 @@ class LoginViewModel extends GetxController {
   makeLogin(LoginModel loginModel) async {
     final userModel = await injectedLoginRepository.makeLogin(loginModel);
     initSession(userModel);
-    Get.offAllNamed(AppRoutes.home);
+    Get.offAllNamed(AppRoutes.realEstateList);
   }
 
   initSession(UserModel userModel) {
@@ -69,9 +76,25 @@ class LoginViewModel extends GetxController {
     injectedUserModel.email = userModel.email;
   }
 
-  validateCellphone(String? cellphone) {
-    return;
+  String? validateCellphone(String? cellphone) {
+    if (cellphone == null || cellphone.isEmpty) {
+      return 'Campo Telefone não pode ser nulo';
+    }
+    if (cellphone.length < 6) return 'Telefone invalido';
+   }
+
+
+  String? validateCpf(String? cpf) {
+    if (cpf == null || cpf.isEmpty) {
+      return 'Campo Cpf não pode ser nulo';
+    }
+    if (cpf.length < 6) return 'Cpf invalido';
   }
 
-  validateCellPhone(String? cellphone) {}
+  String? validateName(String? name) {
+    if (name == null || name.isEmpty) {
+      return 'Campo Nome não pode ser nulo';
+    }
+    if (name.length < 6) return 'Nome invalido';
+  }
 }
