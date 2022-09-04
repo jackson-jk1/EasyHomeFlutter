@@ -9,7 +9,7 @@ class RealEstate extends StatelessWidget {
   const RealEstate({Key? key}) : super(key: key);
 
   Future<List<Immobile>> _getImmobiles() async {
-    http.Response response = await http.get(Uri.parse("https://4f7a-2804-f30-4000-653-297d-7e22-8bb5-dce3.sa.ngrok.io/Immobile"));
+    http.Response response = await http.get(Uri.parse("https://18d7-2804-14c-87b9-b60d-5d4a-7d20-c192-bae3.sa.ngrok.io/Immobile"));
 
     var dadosJson = json.decode(response.body);
 
