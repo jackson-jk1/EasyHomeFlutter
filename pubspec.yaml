@@ -27,6 +27,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  another_carousel_pro:
+    git:
+      url: https://github.com/iamnabink/another_carousel_pro.git
+      ref: master
+  url_launcher:
   flutter:
     sdk: flutter
 
@@ -40,6 +45,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.3
   http: ^0.13.4
   rename: ^2.0.1
+  contactus: ^1.2.0
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +73,10 @@ flutter:
   assets:
     - images/imovel_exemplo.jpg
     - images/LOGO.png
+    - images/jose.jpg
+    - images/jackson.jpg
+    - images/pagoto.jpg
+    - images/casa.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
