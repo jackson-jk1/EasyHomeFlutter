@@ -11,6 +11,7 @@ class RealEstate extends StatelessWidget {
   Future<List<Immobile>> _getImmobiles() async {
     http.Response response = await http.get(Uri.parse("https://18d7-2804-14c-87b9-b60d-5d4a-7d20-c192-bae3.sa.ngrok.io/Immobile"));
 
+
     var dadosJson = json.decode(response.body);
 
     List<Immobile> immobiles = <Immobile>[];
@@ -55,7 +56,7 @@ class RealEstate extends StatelessWidget {
                   String title = i.title;
 
                   return Padding(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.all(0),
                     child: Column(
                       children: [
                         Container(
@@ -64,35 +65,49 @@ class RealEstate extends StatelessWidget {
                                 bottom: BorderSide(
                                     width: 8, color: Colors.black12),
                               )),
-                          margin: const EdgeInsets.symmetric(horizontal: 6),
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.all(10.0),
                             child: Row(
                               children: [
                                 Expanded(
                                     flex: 1,
                                     child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Image.network(
-                                          i.images.firstWhere((element) => element.toString() != null,
+                                        ClipRRect(
+                                              borderRadius: BorderRadius.circular(10.0),
+                                              child:Image.network(
+                                              i.images.firstWhere((element) => element.toString() != null,
                                               orElse: () => 'images/imovel_exemplo.jpg'),
-                                          errorBuilder:
+                                              width: 80,
+                                              height: 80,
+                                              fit:BoxFit.fill,
+                                              errorBuilder:
                                               (context, error, stackTrace) {
                                                 return Image.asset(
                                                     'images/imovel_exemplo.jpg',
-                                                    fit: BoxFit.fitWidth);
+                                                    width: 80,
+                                                    height: 80,
+                                                    fit:BoxFit.fill,
+
+                                                );
                                           },
-                                        )
+                                         )
+                                        ),
                                       ],
                                     )),
                                 const SizedBox(
-                                  width: 12,
+                                  width: 10,
                                 ),
                                 Expanded(
                                     flex: 1,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment
-                                          .start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
                                         Text(
                                           i.title.trimLeft(),
