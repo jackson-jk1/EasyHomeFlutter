@@ -1,8 +1,9 @@
 import 'package:easy_home/modules/Dev_data/dev_data_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:easy_home/theme/AppColors.dart';
 import 'package:url_launcher/url_launcher_string.dart';
+import '../../menu_layout.dart';
 
 class DevDataPage extends StatelessWidget {
   const DevDataPage({Key? key}) : super(key: key);
@@ -18,7 +19,8 @@ class DevDataPage extends StatelessWidget {
   return MaterialApp(
     title: _title,
     home: Scaffold(
-      appBar: AppBar(title: const Text(_title), backgroundColor: Color(0xff131629),),
+      drawer: MenuDashboardPage(),
+      appBar: AppBar(title: const Text(_title), backgroundColor: AppColors.background,),
       body: const MyStatelessWidget(),
     ),
   );
@@ -31,14 +33,14 @@ class MyStatelessWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff131629),
+      backgroundColor: AppColors.background,
       body:Column( children: [
         Card(
         elevation: 8,
         margin: const EdgeInsets.all(10),
         child:Container(
           height: 150,
-          color: Color(0xff131629),
+          color: Color.fromRGBO(33, 39, 74,1.0),
           child: Row(
             children: [
               Center(
@@ -102,7 +104,7 @@ class MyStatelessWidget extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           child:Container(
             height: 150,
-            color: Color(0xff131629),
+            color: Color.fromRGBO(33, 39, 74,1.0),
             child: Row(
               children: [
                 Center(
@@ -166,7 +168,7 @@ class MyStatelessWidget extends StatelessWidget {
           margin: const EdgeInsets.all(10),
           child:Container(
             height: 150,
-            color: Color(0xff131629),
+            color: Color.fromRGBO(33, 39, 74,1.0),
             child: Row(
               children: [
                 const Center(

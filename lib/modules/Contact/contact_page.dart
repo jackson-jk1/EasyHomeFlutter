@@ -1,6 +1,8 @@
 import 'package:easy_home/modules/Dev_data/dev_data_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:easy_home/theme/AppColors.dart';
+import '../../menu_layout.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({Key? key}) : super(key: key);
@@ -15,7 +17,9 @@ class ContactPage extends StatelessWidget {
 
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(title: const Text('Feedback'), backgroundColor: Color(0xff131629)),
+        backgroundColor: AppColors.background,
+        drawer: MenuDashboardPage(),
+        appBar: AppBar(title: const Text('Feedback'), backgroundColor: AppColors.background,),
         body: SingleChildScrollView(
               reverse: true,
               child: Padding(
@@ -31,14 +35,49 @@ class ContactPage extends StatelessWidget {
                         child: Column(
                           children: [
                             TextFormField(
-                              decoration: const InputDecoration(labelText: 'Nome'),
+                              decoration: const InputDecoration(
+                                filled: true, //<-- SEE HERE
+                                fillColor: Color.fromRGBO(33, 39, 74,1.0),
+                                labelText: 'Nome',
+                                labelStyle: TextStyle(color: Colors.white),
+                                border:OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                ),
+                                enabledBorder:OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                ),
+                                focusedBorder:OutlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                  borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                )
+                              ),
                             ),
                             const SizedBox(
                               height: 8,
                             ),
                             TextFormField(
                                 decoration:
-                                const InputDecoration(labelText: 'E-mail'),
+                                const InputDecoration(
+                                    filled: true, //<-- SEE HERE
+                                    fillColor: Color.fromRGBO(33, 39, 74,1.0),
+                                    labelText: 'E-mail',
+                                    labelStyle: TextStyle(color: Colors.white),
+                                    border:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                    ),
+                                    enabledBorder:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+
+                                    ),
+                                    focusedBorder:OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                      borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                                    )),
                                 obscureText: true,
                             ),
                             const SizedBox(
@@ -46,7 +85,22 @@ class ContactPage extends StatelessWidget {
                             ),
                   TextFormField(
                                     decoration: const InputDecoration(
-                                      border: OutlineInputBorder()
+                                        filled: true, //<-- SEE HERE
+                                        fillColor: Color.fromRGBO(33, 39, 74,1.0),
+                                        labelStyle: TextStyle(color: Colors.white),
+                                        border:OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                        ),
+                                        enabledBorder:OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
+                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+
+                                        ),
+                                        focusedBorder:OutlineInputBorder(
+                                          borderSide: const BorderSide(color: Colors.white, width: 1.0),
+                                          borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                                        )
                                     ),
                                     maxLines: 8,
                                 ),
@@ -75,12 +129,13 @@ class ContactPage extends StatelessWidget {
         onPressed: () => showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: const Text('Mensagem enviada com sucesso!'),
-            content: const Text('Obrigado por enviar seu feedback!'),
+            backgroundColor: AppColors.background,
+            title: const Text('Mensagem enviada com sucesso!', style: TextStyle(color: Colors.white)),
+            content: const Text('Obrigado por enviar seu feedback!', style: TextStyle(color: Colors.white)),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.pop(context, 'OK'),
-                child: const Text('OK'),
+                child: const Text('OK', style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
