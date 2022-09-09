@@ -11,6 +11,7 @@ import '../modules/Dev_data/dev_data_binding.dart';
 import '../modules/Dev_data/dev_data_page.dart';
 import '../modules/Contact/contact_binding.dart';
 import '../modules/Contact/contact_page.dart';
+import '../modules/Manual/manual_page.dart';
 import '../modules/real_estate_details/details_page.dart';
 import 'app_routes.dart';
 
@@ -41,6 +42,11 @@ class AppPages {
     GetPage(
         name: AppRoutes.details,
         page: () => const DetailsScreen(),
+        transition: Transition.fade,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: AppRoutes.manual,
+        page: () => const ManualPage(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500)),
   ];

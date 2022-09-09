@@ -55,6 +55,12 @@ class MenuDashboardPage extends StatelessWidget {
             onTap: () => {Get.offAllNamed(AppRoutes.devData)},
           ),
           ListTile(
+            leading: Icon(Icons.integration_instructions),
+            title: Text('Manual do Usuário',
+                style: TextStyle(color: Colors.white)),
+            onTap: () => {Get.offAllNamed(AppRoutes.manual)},
+          ),
+          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout',
                 style: TextStyle(color: Colors.white)),
