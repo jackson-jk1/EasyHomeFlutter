@@ -24,8 +24,8 @@ class ManualPage extends StatelessWidget {
           showMediaController: true,
           onCreated: (controller) {
             controller.setVideoSource(
-              'https://www.youtube.com/watch?v=U9uJRKcAlUk',
-              sourceType: VideoSourceType.network,
+              'videos/App_EasyHome.mp4',
+              sourceType: VideoSourceType.asset,
             );
           },
           onPrepared: (controller, info) {
