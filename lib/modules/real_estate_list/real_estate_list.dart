@@ -6,7 +6,6 @@ import '../../menu_layout.dart';
 
 class RealEstateList extends StatelessWidget {
   const RealEstateList({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

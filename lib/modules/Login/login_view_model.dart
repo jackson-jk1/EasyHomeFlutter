@@ -1,18 +1,20 @@
+import 'dart:convert';
 import 'dart:developer';
 
-
+import 'package:easy_home/shared/widgets/error_dialog.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import '../../data/model/login_model.dart';
-import '../../data/model/user_model.dart';
+import '../../data/model/auth_model.dart';
 import '../../data/repository/login_repository.dart';
 import '../../routes/app_routes.dart';
 
+
 class LoginViewModel extends GetxController {
   final LoginRepository injectedLoginRepository;
-  final UserModel injectedUserModel;
+  final AuthModel injectedAuthModel;
 
-  LoginViewModel({required this.injectedLoginRepository, required this.injectedUserModel});
+  LoginViewModel({required this.injectedLoginRepository, required this.injectedAuthModel});
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -34,18 +36,18 @@ class LoginViewModel extends GetxController {
 
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
-      return 'Campo password não pode ser nulo';
+      return 'Campo senha não pode ser nulo';
     }
 
-    if (password.length < 6) return 'Password muito pequena';
+    if (password.length < 6) return 'Senha muito pequena';
 
     return null;
   }
 
   validateForm() {
     if (formKey.currentState!.validate()) {
-      Get.offAllNamed(AppRoutes.realEstateList);
-      //processLogin();
+      //Get.offAllNamed(AppRoutes.realEstateList);
+      processLogin();
     }
   }
 
@@ -65,15 +67,17 @@ class LoginViewModel extends GetxController {
   }
 
   makeLogin(LoginModel loginModel) async {
-    final userModel = await injectedLoginRepository.makeLogin(loginModel);
-    initSession(userModel);
-    Get.offAllNamed(AppRoutes.realEstateList);
+    final authModel = await injectedLoginRepository.makeLogin(loginModel);
+      initSession(authModel);
+      Get.offAllNamed(AppRoutes.realEstateList);
   }
 
-  initSession(UserModel userModel) {
-    injectedUserModel.id = userModel.id;
-    injectedUserModel.token = userModel.token;
-    injectedUserModel.email = userModel.email;
+
+
+  initSession(AuthModel authModel) async {
+    //injectedUserModel.id = userModel.id;
+    injectedAuthModel.token = authModel.token;
+    //injectedUserModel.email = userModel.email;
   }
 
   String? validateCellphone(String? cellphone) {
