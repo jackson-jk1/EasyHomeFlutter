@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:easy_home/theme/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:date_field/date_field.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'login_view_model.dart';
 
@@ -16,11 +20,50 @@ final List<Map<String, dynamic>> _items = [
   },
 ];
 
-class LoginPage extends GetWidget<LoginViewModel> {
+
+class LoginPage extends GetWidget<LoginViewModel>{
   const LoginPage({Key? key}) : super(key: key);
+  //File? image = null;
+
+  Widget buildButton({
+    required String title,
+    required IconData icon,
+    required VoidCallback onClicked,
+  }) =>
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.fromHeight(46),
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          textStyle: TextStyle(fontSize: 20),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 28),
+            const SizedBox(width: 16),
+            Text(title),
+          ],
+        ),
+        onPressed: onClicked,
+      );
 
   @override
   Widget build(BuildContext context) {
+    File? images = null;
+
+    Future pickImage(ImageSource source) async {
+      try{
+        final image = await ImagePicker().pickImage(source: source);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        //return imageTemporary;
+        //setState(() => images = imageTemporary);
+      } on PlatformException catch(e){
+        print('Falha na escolha da imagem: $e');
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Obx(() {
@@ -193,35 +236,6 @@ class LoginPage extends GetWidget<LoginViewModel> {
                             ),
                             Visibility(
                                 visible: controller.switchLogin.value,
-                                child: TextFormField(
-                                    style: TextStyle(color: AppColors.white),
-                                    textInputAction: TextInputAction.done,
-                                    decoration: const InputDecoration(labelText: 'Cpf *',
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      border:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),
-                                      enabledBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-
-                                      ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),),
-                                    validator: (Cpf) => controller.validateCpf(Cpf),
-                                    controller: controller.cpfController
-                                )
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            Visibility(
-                                visible: controller.switchLogin.value,
                                 child: DateTimeFormField(
                                     decoration: const InputDecoration(labelText: 'Data de Nascimento *',
                                       filled: true, //<-- SEE HERE
@@ -250,96 +264,40 @@ class LoginPage extends GetWidget<LoginViewModel> {
                             const SizedBox(
                               height: 16,
                             ),
+                            images != null ?
                             Visibility(
-                                visible: controller.switchLogin.value,
-                                child: TextFormField(
-                                    style: TextStyle(color: AppColors.white),
-                                    textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(labelText: 'Endereço *',
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      border:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),
-                                      enabledBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
+                              visible: controller.switchLogin.value,
+                              child: Image.file(
+                                  images!,
+                                  width: 160,
+                                  height: 160,
+                                  fit: BoxFit.cover,
 
-                                      ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),),
-                                    validator: (Nome) => controller.validateName(Nome),
-                                    controller: controller.nomeController
-                                )
+                              )
+                            ) : Visibility(
+                              visible: controller.switchLogin.value,
+                              child: Image.asset(
+                                'images/no_user.jpg',
+                                width: 150,
+                              ),
                             ),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            const SizedBox(height: 14),
                             Visibility(
-                                visible: controller.switchLogin.value,
-                                child: TextFormField(
-                                    style: TextStyle(color: AppColors.white),
-                                    textInputAction: TextInputAction.done,
-                                    decoration: const InputDecoration(labelText: 'CEP *',
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      border:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),
-                                      enabledBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-
-                                      ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),),
-                                    validator: (Cpf) => controller.validateCpf(Cpf),
-                                    controller: controller.cpfController
-                                )
+                              visible: controller.switchLogin.value,
+                              child: buildButton(
+                                  title: 'Galeria',
+                                  icon: Icons.image_outlined,
+                                  onClicked: () => pickImage(ImageSource.gallery),
+                                ),
                             ),
-                            const SizedBox(
-                              height: 16,
-                            ),
+                            const SizedBox(height: 14),
                             Visibility(
-                                visible: controller.switchLogin.value,
-                                child: SelectFormField(
-                                    style: TextStyle(color: AppColors.white),
-                                    textInputAction: TextInputAction.done,
-                                    decoration: const InputDecoration(labelText: 'Sexo',
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      suffixIcon: Icon(Icons.arrow_drop_down, color: Colors.white),
-                                      border:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),
-                                      enabledBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-
-                                      ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),),
-                                  type: SelectFormFieldType.dropdown, // or can be dialog
-                                  initialValue: 'm',
-                                  items: _items,
-                                  onChanged: (val) => print(val),
-                                  onSaved: (val) => print(val),
-                                )
-                            ),
-                            const SizedBox(
-                              height: 16,
+                              visible: controller.switchLogin.value,
+                              child: buildButton(
+                                title: 'Camera',
+                                icon: Icons.camera_alt_outlined,
+                                onClicked: () => pickImage(ImageSource.camera),
+                              ),
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -368,7 +326,8 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                     ? 'Cadastrar'
                                     : 'Entrar'))
                           ],
-                        ))
+                        ),),
+
                   ],
                 ),
               ),
