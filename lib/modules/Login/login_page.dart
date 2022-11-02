@@ -20,10 +20,11 @@ final List<Map<String, dynamic>> _items = [
   },
 ];
 
+//File? images;
 
 class LoginPage extends GetWidget<LoginViewModel>{
-  const LoginPage({Key? key}) : super(key: key);
-  //File? image = null;
+  LoginPage({Key? key}) : super(key: key);
+  File? images = null;
 
   Widget buildButton({
     required String title,
@@ -49,19 +50,17 @@ class LoginPage extends GetWidget<LoginViewModel>{
 
   @override
   Widget build(BuildContext context) {
-    File? images = null;
 
-    Future pickImage(ImageSource source) async {
-      try{
-        final image = await ImagePicker().pickImage(source: source);
-        if (image == null) return;
+    Future<File?> getImage(ImageSource source) async {
+      final ImagePicker _picker = ImagePicker();
+      // Pick an image
+      final XFile? image = await _picker.pickImage(source: source);
+      if (image == null) return null;
+      //TO convert Xfile into file
+      this.images = File(image!.path);
+      (context as Element).markNeedsBuild();
 
-        final imageTemporary = File(image.path);
-        //return imageTemporary;
-        //setState(() => images = imageTemporary);
-      } on PlatformException catch(e){
-        print('Falha na escolha da imagem: $e');
-      }
+      return images;
     }
 
     return Scaffold(
@@ -220,7 +219,6 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                     enabledBorder:OutlineInputBorder(
                                       borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
                                       borderRadius: BorderRadius.all(Radius.circular(50.0)),
-
                                     ),
                                     focusedBorder:OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.white, width: 1.0),
@@ -234,36 +232,6 @@ class LoginPage extends GetWidget<LoginViewModel>{
                             const SizedBox(
                               height: 16,
                             ),
-                            Visibility(
-                                visible: controller.switchLogin.value,
-                                child: DateTimeFormField(
-                                    decoration: const InputDecoration(labelText: 'Data de Nascimento *',
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
-                                      labelStyle: TextStyle(color: Colors.white),
-                                      suffixIcon: Icon(Icons.event_note, color: Colors.white),
-                                      border:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),
-                                      enabledBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-
-                                      ),
-                                      focusedBorder:OutlineInputBorder(
-                                        borderSide: const BorderSide(color: Colors.white, width: 1.0),
-                                        borderRadius: BorderRadius.all(Radius.circular(50.0)),
-                                      ),),
-                                  mode: DateTimeFieldPickerMode.date,
-                                    onDateSelected: (DateTime value) {
-                                      print(value);
-                                    },
-                                )
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
                             images != null ?
                             Visibility(
                               visible: controller.switchLogin.value,
@@ -272,13 +240,14 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                   width: 160,
                                   height: 160,
                                   fit: BoxFit.cover,
-
                               )
                             ) : Visibility(
                               visible: controller.switchLogin.value,
                               child: Image.asset(
                                 'images/no_user.jpg',
-                                width: 150,
+                                width: 160,
+                                height: 160,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             const SizedBox(height: 14),
@@ -287,7 +256,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               child: buildButton(
                                   title: 'Galeria',
                                   icon: Icons.image_outlined,
-                                  onClicked: () => pickImage(ImageSource.gallery),
+                                  onClicked: () => getImage(ImageSource.gallery),
                                 ),
                             ),
                             const SizedBox(height: 14),
@@ -296,7 +265,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               child: buildButton(
                                 title: 'Camera',
                                 icon: Icons.camera_alt_outlined,
-                                onClicked: () => pickImage(ImageSource.camera),
+                                onClicked: () => getImage(ImageSource.camera),
                               ),
                             ),
                             Row(
@@ -318,7 +287,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               height: 8,
                             ),
                             ElevatedButton(
-                                onPressed: () => controller.validateForm(),
+                                onPressed: () => controller.validateForm(images),
                                 style: ElevatedButton.styleFrom(
                                     minimumSize: Size(Get.width, Get.height * 0.05)),
                                 child:
@@ -326,8 +295,8 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                     ? 'Cadastrar'
                                     : 'Entrar'))
                           ],
-                        ),),
-
+                        ),
+                    ),
                   ],
                 ),
               ),
