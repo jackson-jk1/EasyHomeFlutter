@@ -4,12 +4,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'dart:developer' as dev;
+import '../../real_estate_details/details_page.dart';
+
 class RealEstate extends StatelessWidget {
 
   const RealEstate({Key? key}) : super(key: key);
 
   Future<List<Immobile>> _getImmobiles() async {
-    http.Response response = await http.get(Uri.parse("https://18d7-2804-14c-87b9-b60d-5d4a-7d20-c192-bae3.sa.ngrok.io/Immobile"));
+    http.Response response = await http.get(Uri.parse("https://691e-2804-7f4-378f-bd3b-d9e4-1536-13b5-849f.sa.ngrok.io/Immobile"));
 
 
     var dadosJson = json.decode(response.body);
@@ -55,7 +57,16 @@ class RealEstate extends StatelessWidget {
                   Immobile i = lista[index];
                   String title = i.title;
 
-                  return Padding(
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const DetailsScreen(),
+                          ),
+                        );
+                      },
+                  child: Padding(
                     padding: const EdgeInsets.all(0),
                     child: Column(
                       children: [
@@ -130,6 +141,7 @@ class RealEstate extends StatelessWidget {
                         ),
                       ],
                     ),
+                  ),
                   );
                 }
                 return ListTile(

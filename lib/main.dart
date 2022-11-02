@@ -24,7 +24,7 @@ class App extends StatelessWidget {
       smartManagement: SmartManagement.full,
       initialBinding: InitialBinding(),
       title: 'EasyHome',
-      initialRoute: AppRoutes.details,
+      initialRoute: AppRoutes.login,
       getPages: AppPages.pages,
     );
   }

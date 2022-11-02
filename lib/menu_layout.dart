@@ -43,22 +43,22 @@ class MenuDashboardPage extends StatelessWidget {
             onTap: () => { Get.offAllNamed(AppRoutes.realEstateList)},
           ),
           ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Favoritos',
-                style: TextStyle(color: Colors.white)),
-            onTap: () => {},
-          ),
-          ListTile(
             leading: Icon(Icons.verified_user),
-            title: Text('Perfil',
+            title: Text('Feedback',
                 style: TextStyle(color: Colors.white)),
-            onTap: () => {},
+            onTap: () => {Get.offAllNamed(AppRoutes.contact)},
           ),
           ListTile(
             leading: Icon(Icons.person),
-            title: Text('Contatos',
+            title: Text('Contato',
                 style: TextStyle(color: Colors.white)),
-            onTap: () => {},
+            onTap: () => {Get.offAllNamed(AppRoutes.devData)},
+          ),
+          ListTile(
+            leading: Icon(Icons.integration_instructions),
+            title: Text('Manual do Usuário',
+                style: TextStyle(color: Colors.white)),
+            onTap: () => {Get.offAllNamed(AppRoutes.manual)},
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),

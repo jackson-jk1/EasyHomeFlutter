@@ -1,13 +1,69 @@
+import 'dart:io';
+
 import 'package:easy_home/theme/AppColors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:date_field/date_field.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:select_form_field/select_form_field.dart';
 import 'login_view_model.dart';
 
-class LoginPage extends GetWidget<LoginViewModel> {
+final List<Map<String, dynamic>> _items = [
+  {
+    'value': 'm',
+    'label': 'M',
+  },
+  {
+    'value': 'f',
+    'label': 'F',
+  },
+];
+
+
+class LoginPage extends GetWidget<LoginViewModel>{
   const LoginPage({Key? key}) : super(key: key);
+  //File? image = null;
+
+  Widget buildButton({
+    required String title,
+    required IconData icon,
+    required VoidCallback onClicked,
+  }) =>
+      ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.fromHeight(46),
+          primary: Colors.white,
+          onPrimary: Colors.black,
+          textStyle: TextStyle(fontSize: 20),
+        ),
+        child: Row(
+          children: [
+            Icon(icon, size: 28),
+            const SizedBox(width: 16),
+            Text(title),
+          ],
+        ),
+        onPressed: onClicked,
+      );
 
   @override
   Widget build(BuildContext context) {
+    File? images = null;
+
+    Future pickImage(ImageSource source) async {
+      try{
+        final image = await ImagePicker().pickImage(source: source);
+        if (image == null) return;
+
+        final imageTemporary = File(image.path);
+        //return imageTemporary;
+        //setState(() => images = imageTemporary);
+      } on PlatformException catch(e){
+        print('Falha na escolha da imagem: $e');
+      }
+    }
+
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Obx(() {
@@ -35,7 +91,7 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                 style: TextStyle(color: AppColors.white),
                                 controller: controller.emailController,
                                 textInputAction: TextInputAction.next,
-                                  decoration: const InputDecoration(labelText: 'E-mail',
+                                  decoration: const InputDecoration(labelText: 'E-mail *',
                                   filled: true,
                                   fillColor: Color.fromRGBO(33, 39, 74,1.0),
                                   labelStyle: TextStyle(color: Colors.white),
@@ -62,7 +118,7 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                 textInputAction: TextInputAction.next,
                                 style: TextStyle(color: AppColors.white),
                                 decoration:
-                                const InputDecoration(labelText: 'Password',
+                                const InputDecoration(labelText: 'Senha *',
                                   filled: true, //<-- SEE HERE
                                   fillColor: Color.fromRGBO(33, 39, 74,1.0),
                                   labelStyle: TextStyle(color: Colors.white),
@@ -93,7 +149,7 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                 child: TextFormField(
                                     style: TextStyle(color: AppColors.white),
                                     textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(labelText: 'Password Confirm',
+                                    decoration: const InputDecoration(labelText: 'Confirmar Senha *',
                                       filled: true, //<-- SEE HERE
                                       fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
                                       labelStyle: TextStyle(color: Colors.white),
@@ -119,12 +175,11 @@ class LoginPage extends GetWidget<LoginViewModel> {
                               height: 16,
                             ),
                             Visibility(
-
                                 visible: controller.switchLogin.value,
                                 child: TextFormField(
                                     style: TextStyle(color: AppColors.white),
                                     textInputAction: TextInputAction.next,
-                                    decoration: const InputDecoration(labelText: 'Nome',
+                                    decoration: const InputDecoration(labelText: 'Nome *',
                                       filled: true, //<-- SEE HERE
                                       fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
                                       labelStyle: TextStyle(color: Colors.white),
@@ -154,7 +209,7 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                   style: TextStyle(color: AppColors.white),
                                   controller: controller.telefoneController,
                                   textInputAction: TextInputAction.next,
-                                  decoration: const InputDecoration(labelText: 'Telefone',
+                                  decoration: const InputDecoration(labelText: 'Telefone *',
                                     filled: true, //<-- SEE HERE
                                     fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
                                     labelStyle: TextStyle(color: Colors.white),
@@ -181,13 +236,12 @@ class LoginPage extends GetWidget<LoginViewModel> {
                             ),
                             Visibility(
                                 visible: controller.switchLogin.value,
-                                child: TextFormField(
-                                    style: TextStyle(color: AppColors.white),
-                                    textInputAction: TextInputAction.done,
-                                    decoration: const InputDecoration(labelText: 'Cpf',
+                                child: DateTimeFormField(
+                                    decoration: const InputDecoration(labelText: 'Data de Nascimento *',
                                       filled: true, //<-- SEE HERE
                                       fillColor: Color.fromRGBO(33, 39, 74,1.0),//<-- SEE HERE
                                       labelStyle: TextStyle(color: Colors.white),
+                                      suffixIcon: Icon(Icons.event_note, color: Colors.white),
                                       border:OutlineInputBorder(
                                         borderSide: const BorderSide(color: Color.fromRGBO(61, 59, 59,1.0), width: 0.5),
                                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
@@ -201,25 +255,62 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                         borderSide: const BorderSide(color: Colors.white, width: 1.0),
                                         borderRadius: BorderRadius.all(Radius.circular(50.0)),
                                       ),),
-                                    validator: (Cpf) => controller.validateCpf(Cpf),
-                                    controller: controller.cpfController
+                                  mode: DateTimeFieldPickerMode.date,
+                                    onDateSelected: (DateTime value) {
+                                      print(value);
+                                    },
                                 )
                             ),
                             const SizedBox(
                               height: 16,
                             ),
+                            images != null ?
+                            Visibility(
+                              visible: controller.switchLogin.value,
+                              child: Image.file(
+                                  images!,
+                                  width: 160,
+                                  height: 160,
+                                  fit: BoxFit.cover,
+
+                              )
+                            ) : Visibility(
+                              visible: controller.switchLogin.value,
+                              child: Image.asset(
+                                'images/no_user.jpg',
+                                width: 150,
+                              ),
+                            ),
+                            const SizedBox(height: 14),
+                            Visibility(
+                              visible: controller.switchLogin.value,
+                              child: buildButton(
+                                  title: 'Galeria',
+                                  icon: Icons.image_outlined,
+                                  onClicked: () => pickImage(ImageSource.gallery),
+                                ),
+                            ),
+                            const SizedBox(height: 14),
+                            Visibility(
+                              visible: controller.switchLogin.value,
+                              child: buildButton(
+                                title: 'Camera',
+                                icon: Icons.camera_alt_outlined,
+                                onClicked: () => pickImage(ImageSource.camera),
+                              ),
+                            ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Login',
+                                const Text('Entrar',
                                     style: TextStyle(color: Colors.white)),
 
                                 Switch(
                                   value: controller.switchLogin.value,
                                   onChanged: (_) => controller.changeSwitchLogin(),
                                 ),
-                                const Text('Sign Up',
+                                const Text('Cadastrar',
                                     style: TextStyle(color: Colors.white))
                               ],
                             ),
@@ -232,10 +323,11 @@ class LoginPage extends GetWidget<LoginViewModel> {
                                     minimumSize: Size(Get.width, Get.height * 0.05)),
                                 child:
                                 Text(controller.switchLogin.value
-                                    ? 'Sign Up'
-                                    : 'Login'))
+                                    ? 'Cadastrar'
+                                    : 'Entrar'))
                           ],
-                        ))
+                        ),),
+
                   ],
                 ),
               ),

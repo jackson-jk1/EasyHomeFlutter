@@ -5,4 +5,5 @@ abstract class AppRoutes {
   static const devData = '/dev_data';
   static const contact = '/contact';
   static const details = '/real_estate_details';
+  static const manual = '/manual';
 }
