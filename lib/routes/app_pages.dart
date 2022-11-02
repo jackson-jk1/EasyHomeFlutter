@@ -20,7 +20,7 @@ class AppPages {
   static final pages = [
     GetPage(
         name: AppRoutes.login,
-        page: () => const LoginPage(),
+        page: () => LoginPage(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500),
         binding: LoginBinding()),

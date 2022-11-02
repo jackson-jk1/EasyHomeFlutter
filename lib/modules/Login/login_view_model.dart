@@ -1,13 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io';
 import 'package:easy_home/shared/widgets/error_dialog.dart';
+import 'package:date_field/date_field.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../data/model/login_model.dart';
 import '../../data/model/auth_model.dart';
+import '../../data/model/new_user_model.dart';
+import '../../data/model/user_model.dart';
 import '../../data/repository/login_repository.dart';
 import '../../routes/app_routes.dart';
+import './controller.dart';
 
 
 class LoginViewModel extends GetxController {
@@ -23,6 +29,9 @@ class LoginViewModel extends GetxController {
   final TextEditingController telefoneController = TextEditingController();
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();
+  final ImagePicker imagePicker = ImagePicker();
+
+  final controller = Controller();
 
   RxBool switchLogin = false.obs;
 
@@ -44,10 +53,13 @@ class LoginViewModel extends GetxController {
     return null;
   }
 
-  validateForm() {
+  validateForm(File? file) {
     if (formKey.currentState!.validate()) {
       //Get.offAllNamed(AppRoutes.realEstateList);
       processLogin();
+      Get.offAllNamed(AppRoutes.realEstateList);
+      sendToApi(file);
+      //processLogin();
     }
   }
 
@@ -56,6 +68,25 @@ class LoginViewModel extends GetxController {
       await createLogin();
     } catch (e) {
       log("Ocorreu um erro");
+    }
+  }
+
+  sendToApi(File? file) async {
+    try{
+      NewUserModel newUserModel = NewUserModel(
+        email: emailController.value.text,
+        password: passwordController.value.text,
+        name: nomeController.value.text,
+        telefone: telefoneController.value.text,
+        image: ''
+      );
+      controller.uploadImage(file, newUserModel);
+      /*log(newUserModel.email);
+      log(newUserModel.password);
+      log(newUserModel.name);
+      log(newUserModel.telefone);*/
+    } catch (e) {
+      log("Erro ao enviar dados para a API");
     }
   }
 
