@@ -50,9 +50,9 @@ class MenuDashboardPage extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.person),
-            title: Text('Contato',
+            title: Text('Perfil',
                 style: TextStyle(color: Colors.white)),
-            onTap: () => {Get.offAllNamed(AppRoutes.devData)},
+            onTap: () => {Get.offAllNamed(AppRoutes.profile)},
           ),
           ListTile(
             leading: Icon(Icons.integration_instructions),

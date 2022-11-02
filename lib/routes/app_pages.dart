@@ -4,6 +4,7 @@ import 'package:easy_home/modules/real_estate_list/real_estate_list.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list_binding.dart';
 import 'package:get/get.dart';
 
+import '../modules/Edit_profile/edit_profile_page.dart';
 import '../modules/Login/login_binding.dart';
 import '../modules/Login/login_page.dart';
 
@@ -47,6 +48,11 @@ class AppPages {
     GetPage(
         name: AppRoutes.manual,
         page: () => const ManualPage(),
+        transition: Transition.fade,
+        transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: AppRoutes.profile,
+        page: () => const EditProfile(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500)),
   ];

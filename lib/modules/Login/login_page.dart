@@ -8,6 +8,7 @@ import 'package:date_field/date_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'login_view_model.dart';
+import 'package:easy_home/shared/widgets/build_button.dart';
 
 final List<Map<String, dynamic>> _items = [
   {
@@ -24,28 +25,6 @@ final List<Map<String, dynamic>> _items = [
 class LoginPage extends GetWidget<LoginViewModel>{
   const LoginPage({Key? key}) : super(key: key);
   //File? image = null;
-
-  Widget buildButton({
-    required String title,
-    required IconData icon,
-    required VoidCallback onClicked,
-  }) =>
-      ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          minimumSize: Size.fromHeight(46),
-          primary: Colors.white,
-          onPrimary: Colors.black,
-          textStyle: TextStyle(fontSize: 20),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, size: 28),
-            const SizedBox(width: 16),
-            Text(title),
-          ],
-        ),
-        onPressed: onClicked,
-      );
 
   @override
   Widget build(BuildContext context) {

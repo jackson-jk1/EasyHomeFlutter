@@ -6,4 +6,5 @@ abstract class AppRoutes {
   static const contact = '/contact';
   static const details = '/real_estate_details';
   static const manual = '/manual';
+  static const profile = '/profile';
 }
