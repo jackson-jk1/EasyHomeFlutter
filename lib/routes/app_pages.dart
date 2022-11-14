@@ -1,5 +1,7 @@
 import 'package:easy_home/modules/Dev_data/dev_data_page.dart';
 import 'package:easy_home/modules/Contact/contact_page.dart';
+import 'package:easy_home/modules/Reset_password/reset_pass_binding.dart';
+import 'package:easy_home/modules/Reset_password/reset_pass_page.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list_binding.dart';
 import 'package:get/get.dart';
@@ -55,5 +57,12 @@ class AppPages {
         page: () => const EditProfile(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500)),
+    GetPage(
+        name: AppRoutes.resetPassword,
+        page: () => const ResetPassword(),
+        transition: Transition.fade,
+        transitionDuration: const Duration(milliseconds: 500),
+        binding: ResetPasswordBinding(),
+    ),
   ];
 }
