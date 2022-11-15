@@ -4,6 +4,7 @@ import 'package:get/instance_manager.dart';
 import '../../data/model/auth_model.dart';
 import '../../data/provider/api/http_client.dart';
 import '../../data/repository/login_repository.dart';
+import '../../data/repository/register_repository.dart';
 import 'login_view_model.dart';
 
 

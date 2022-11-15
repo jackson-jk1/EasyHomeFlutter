@@ -81,7 +81,7 @@ class ResetPassword extends GetWidget<ResetPasswordViewModel> {
                             height: 16,
                           ),
                           ElevatedButton(
-                              onPressed: ()=> controller.validateForm(),
+                              onPressed: ()=> controller.validateForm(context),
                               style: ElevatedButton.styleFrom(
                                   minimumSize: Size(
                                       Get.width, Get.height * 0.05)),

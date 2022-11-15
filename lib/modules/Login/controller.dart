@@ -7,13 +7,17 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import '../../data/model/new_user_model.dart';
+import '../../data/provider/api/http_client.dart';
 
 
 class Controller extends GetxController {
-  var request =
-    http.MultipartRequest('POST', Uri.parse('https://d19c-2804-7f4-378f-f04c-f905-d0ec-c922-76a6.sa.ngrok.io/v1/user'));
+  final HttpClient Http;
+  Controller(this.Http);
 
   Future<bool> uploadImage(File? file, NewUserModel user) async {
+    var request =
+    http.MultipartRequest('POST', Uri.parse('${Http.apiUrl()}/v1/user'));
+
     request.fields['Name'] = user.name.toString();
     request.fields['CellPhone'] = user.telefone.toString();
     request.fields['Email'] = user.email.toString();

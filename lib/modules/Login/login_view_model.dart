@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_home/data/model/generic_response_model.dart';
+import 'package:easy_home/data/repository/register_repository.dart';
 import 'package:easy_home/shared/widgets/error_dialog.dart';
 import 'package:date_field/date_field.dart';
 import 'package:get/get.dart';
@@ -19,10 +21,11 @@ import './controller.dart';
 
 class LoginViewModel extends GetxController {
   final LoginRepository injectedLoginRepository;
+  final RegisterRepository injectedRegisterRepository;
   final AuthModel injectedAuthModel;
   final storage = const FlutterSecureStorage();
 
-  LoginViewModel({required this.injectedLoginRepository, required this.injectedAuthModel});
+  LoginViewModel({required this.injectedLoginRepository, required this.injectedRegisterRepository, required this.injectedAuthModel});
 
   final formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
@@ -32,8 +35,6 @@ class LoginViewModel extends GetxController {
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();
   final ImagePicker imagePicker = ImagePicker();
-
-  final controller = Controller();
 
   RxBool switchLogin = false.obs;
 
@@ -55,10 +56,10 @@ class LoginViewModel extends GetxController {
     return null;
   }
 
-  validateForm(File? file) {
+  validateForm(BuildContext context, File? file) {
     if (formKey.currentState!.validate()) {
       //Get.offAllNamed(AppRoutes.realEstateList);
-      processLogin();
+      processLogin(context);
       //Get.offAllNamed(AppRoutes.realEstateList);
       //sendToApi(file);
       //processLogin();
@@ -68,13 +69,6 @@ class LoginViewModel extends GetxController {
   Future<bool?> validateRegister(BuildContext context, File? file) async {
     log("Entrou no validateRegister");
     try{
-      NewUserModel newUserModel = NewUserModel(
-          email: emailController.value.text,
-          password: passwordController.value.text,
-          name: nomeController.value.text,
-          telefone: telefoneController.value.text,
-          image: ''
-      );
       sendToApi(context, file);
     } catch (e) {
       log("Erro ao enviar dados para a API");
@@ -83,16 +77,16 @@ class LoginViewModel extends GetxController {
     return null;
   }
 
-  processLogin() async {
+  processLogin(BuildContext context) async {
     try {
-      await createLogin();
+      await createLogin(context);
     } catch (e) {
       log("Ocorreu um erro");
     }
   }
 
   sendToApi(BuildContext context, File? file) async {
-    try{
+    //try{
       NewUserModel newUserModel = NewUserModel(
         email: emailController.value.text,
         password: passwordController.value.text,
@@ -100,28 +94,48 @@ class LoginViewModel extends GetxController {
         telefone: telefoneController.value.text,
         image: ''
       );
-      if (await controller.uploadImage(file, newUserModel)){
+      /*if (await injectedRegisterRepository.makeNewUser(file, newUserModel)){
         success(context);
       }
       else{
         error(context);
+      }*/
+      final response = await injectedRegisterRepository.makeNewUser(file, newUserModel);
+      if (response.statusCode == 201) {
+        log('Retornou 201');
+        success(context, response.response);
+      } else if (response.statusCode == 200) {
+        log('Retornou 200');
+        success(context, response.response);
       }
-    } catch (e) {
+      else{
+        errorRegister(context, response.response);
+        log('erro api');
+      }
+
+    /*} catch (e) {
       log("Erro ao enviar dados para a API");
-    }
+      log(e.toString());
+    }*/
   }
 
-  createLogin() async {
+  createLogin(BuildContext context) async {
     LoginModel loginModel = LoginModel(
         email: emailController.value.text,
         password: passwordController.value.text);
-    makeLogin(loginModel);
+    makeLogin(context, loginModel);
   }
 
-  makeLogin(LoginModel loginModel) async {
+  makeLogin(BuildContext context, LoginModel loginModel) async {
     final authModel = await injectedLoginRepository.makeLogin(loginModel);
-      await initSession(authModel);
+    if (authModel == null) {
+      log('Retornou null');
+      errorLogin(context);
+    }
+    else{
+      initSession(authModel);
       Get.offAllNamed(AppRoutes.realEstateList);
+    }
   }
 
 
@@ -156,12 +170,14 @@ class LoginViewModel extends GetxController {
 }
 
 @override
-Future<String?> success(BuildContext context) {
+Future<String?> success(BuildContext context, String? response) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Atenção!'),
-      content: const Text('Conta criada com sucesso!'),
+      content: response != null
+          ? Text(response)
+          : Text('Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
       actions: [
         TextButton(
           onPressed: () => {Navigator.pop(context, 'OK'),
@@ -175,16 +191,36 @@ Future<String?> success(BuildContext context) {
 }
 
 @override
-Future<String?> error(BuildContext context) {
+Future<String?> errorRegister(BuildContext context, String? response) {
   return showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: const Text('Atenção!'),
-      content: const Text('Erro na criação da conta!'),
+      content: response != null
+            ? Text(response)
+            : Text('Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
       actions: <Widget>[
         TextButton(
           onPressed: () => {Navigator.pop(context, 'OK'),
             Get.offAllNamed(AppRoutes.login)
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+
+@override
+Future<String?> errorLogin(BuildContext context) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Atenção!'),
+      content: Text('E-mail ou senha incorretos.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK')
           },
           child: const Text('OK'),
         ),
