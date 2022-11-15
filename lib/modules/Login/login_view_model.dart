@@ -13,12 +13,14 @@ import '../../data/model/new_user_model.dart';
 import '../../data/model/user_model.dart';
 import '../../data/repository/login_repository.dart';
 import '../../routes/app_routes.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import './controller.dart';
 
 
 class LoginViewModel extends GetxController {
   final LoginRepository injectedLoginRepository;
   final AuthModel injectedAuthModel;
+  final storage = const FlutterSecureStorage();
 
   LoginViewModel({required this.injectedLoginRepository, required this.injectedAuthModel});
 
@@ -57,7 +59,7 @@ class LoginViewModel extends GetxController {
     if (formKey.currentState!.validate()) {
       //Get.offAllNamed(AppRoutes.realEstateList);
       processLogin();
-      Get.offAllNamed(AppRoutes.realEstateList);
+      //Get.offAllNamed(AppRoutes.realEstateList);
       //sendToApi(file);
       //processLogin();
     }
@@ -118,7 +120,7 @@ class LoginViewModel extends GetxController {
 
   makeLogin(LoginModel loginModel) async {
     final authModel = await injectedLoginRepository.makeLogin(loginModel);
-      initSession(authModel);
+      await initSession(authModel);
       Get.offAllNamed(AppRoutes.realEstateList);
   }
 
@@ -126,7 +128,7 @@ class LoginViewModel extends GetxController {
 
   initSession(AuthModel authModel) async {
     //injectedUserModel.id = userModel.id;
-    injectedAuthModel.token = authModel.token;
+    injectedLoginRepository.saveToken(authModel.token);
     //injectedUserModel.email = userModel.email;
   }
 

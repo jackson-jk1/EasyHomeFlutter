@@ -4,12 +4,14 @@ import 'dart:io';
 
 import '../model/new_user_model.dart';
 import '../provider/api/http_client.dart';
+import '../provider/storage/storage_keys.dart';
 import 'package:http/http.dart' as http;
 
 class RegisterRepository {
   final HttpClient Http;
+  final StorageKeys storage;
 
-  RegisterRepository({required this.Http});
+  RegisterRepository({required this.Http, required this.storage});
 
   Future<String> makeNewUser(NewUserModel user, File? file) async {
     try {
@@ -34,5 +36,9 @@ class RegisterRepository {
     } catch (e) {
       rethrow;
     }
+  }
+
+  Future<String?> getToken(){
+    return storage.readToken();
   }
 }
