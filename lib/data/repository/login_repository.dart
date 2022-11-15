@@ -3,11 +3,13 @@ import 'package:easy_home/shared/widgets/error_dialog.dart';
 import 'package:get/get.dart';
 import '../model/auth_model.dart';
 import '../provider/api/http_client.dart';
+import '../provider/storage/storage_keys.dart';
 
 class LoginRepository {
   final HttpClient http;
+  final StorageKeys storage;
 
-  LoginRepository({required this.http});
+  LoginRepository({required this.storage, required this.http});
 
   Future<AuthModel?> makeLogin(LoginModel loginModel) async {
     try {
@@ -23,5 +25,10 @@ class LoginRepository {
       rethrow;
     }
   }
+
+  void saveToken(String token) {
+    storage.store(token: token);
+  }
+
 
 }

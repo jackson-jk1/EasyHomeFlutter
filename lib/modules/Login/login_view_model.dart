@@ -15,6 +15,7 @@ import '../../data/model/new_user_model.dart';
 import '../../data/model/user_model.dart';
 import '../../data/repository/login_repository.dart';
 import '../../routes/app_routes.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import './controller.dart';
 
 
@@ -22,6 +23,7 @@ class LoginViewModel extends GetxController {
   final LoginRepository injectedLoginRepository;
   final RegisterRepository injectedRegisterRepository;
   final AuthModel injectedAuthModel;
+  final storage = const FlutterSecureStorage();
 
   LoginViewModel({required this.injectedLoginRepository, required this.injectedRegisterRepository, required this.injectedAuthModel});
 
@@ -140,7 +142,7 @@ class LoginViewModel extends GetxController {
 
   initSession(AuthModel authModel) async {
     //injectedUserModel.id = userModel.id;
-    injectedAuthModel.token = authModel.token;
+    injectedLoginRepository.saveToken(authModel.token);
     //injectedUserModel.email = userModel.email;
   }
 
