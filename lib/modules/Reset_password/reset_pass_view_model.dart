@@ -25,26 +25,70 @@ class ResetPasswordViewModel extends GetxController {
   }
 
 
-  validateForm() {
+  validateForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
-      processEmail();
+      processEmail(context);
     }
   }
 
-  processEmail() async {
+  processEmail(BuildContext context) async {
 
-      await sendEmail(emailController.value.text);
+      await sendEmail(emailController.value.text, context);
 
   }
 
-  sendEmail(String email) async {
+  sendEmail(String email, BuildContext context) async {
     LoginModel loginModel = LoginModel(
         email: '',
         password: '');
-    final bool check = await injectedPasswordRepository.sendEmail(email, loginModel);
-    Get.offAllNamed(AppRoutes.login);
+
+    final response = await injectedPasswordRepository.sendEmail(email, loginModel);
+    if (response.statusCode == 200) {
+      successResetPass(context, response.response);
+    }
+    else{
+      errorResetPass(context, response.response);
+    }
   }
+}
 
+@override
+Future<String?> successResetPass(BuildContext context, String? response) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Sucesso!'),
+      content: response != null
+          ? Text(response)
+          : Text('Erro no reset da senha, verifique o e-mail preenchido e tente novamente.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK'),
+          Get.offAllNamed(AppRoutes.login),
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
 
-
+@override
+Future<String?> errorResetPass(BuildContext context, String? response) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Atenção!'),
+      content: response != null
+          ? Text(response)
+          : Text('Erro no reset da senha, verifique o e-mail preenchido e tente novamente.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK'),
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
 }

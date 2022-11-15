@@ -9,19 +9,19 @@ class LoginRepository {
 
   LoginRepository({required this.http});
 
-  Future<AuthModel> makeLogin(LoginModel loginModel) async {
+  Future<AuthModel?> makeLogin(LoginModel loginModel) async {
     try {
       final response = await http.post(
           url: "${http.apiUrl()}/v1/user/auth",
           header: {'Content-Type': 'application/json; charset=UTF-8'},
           body: loginModel.toJson());
       if (response.statusCodeIsOk) return AuthModel.fromJson(response.body);
+      else return null;
 
-      throw Exception('AuthenticantionException');
+      //throw Exception('AuthenticantionException');
     } catch (e) {
       rethrow;
     }
   }
-
 
 }

@@ -275,7 +275,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                             ElevatedButton(
                                 onPressed: () =>  controller.switchLogin.value
                                     ? controller.validateRegister(context, images)
-                                    : controller.validateForm(images),
+                                    : controller.validateForm(context, images),
                                 style: ElevatedButton.styleFrom(
                                     minimumSize: Size(Get.width, Get.height * 0.05)),
                                 child:
