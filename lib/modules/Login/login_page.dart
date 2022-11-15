@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:date_field/date_field.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:select_form_field/select_form_field.dart';
+import '../../routes/app_routes.dart';
 import 'login_view_model.dart';
 import 'package:easy_home/shared/widgets/build_button.dart';
 
@@ -122,7 +123,13 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               height: 16,
                             ),
                             Visibility(
-
+                                visible: !controller.switchLogin.value,
+                                child: InkWell(
+                                    child: const Text('Esqueci minha senha', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 12),),
+                                    onTap: () => { Get.offAllNamed(AppRoutes.resetPassword)},
+                                ),
+                            ),
+                            Visibility(
                                 visible: controller.switchLogin.value,
                                 child: TextFormField(
                                     style: TextStyle(color: AppColors.white),
