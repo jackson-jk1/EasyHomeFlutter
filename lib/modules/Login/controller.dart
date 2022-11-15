@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-
 import '../../data/model/new_user_model.dart';
+
 
 class Controller extends GetxController {
   var request =
@@ -37,4 +37,5 @@ class Controller extends GetxController {
       return false;
     }
   }
-}
+
+ }

@@ -1,5 +1,7 @@
 import 'package:easy_home/data/model/login_model.dart';
-import '../model/user_model.dart';
+import 'package:easy_home/shared/widgets/error_dialog.dart';
+import 'package:get/get.dart';
+import '../model/auth_model.dart';
 import '../provider/api/http_client.dart';
 
 class LoginRepository {
@@ -7,16 +9,19 @@ class LoginRepository {
 
   LoginRepository({required this.http});
 
-  Future<UserModel> makeLogin(LoginModel loginModel) async {
+  Future<AuthModel> makeLogin(LoginModel loginModel) async {
     try {
       final response = await http.post(
-          url: "${http.apiUrl()}/users/authenticate",
-          header: {'Content-Type': 'application/json'},
+          url: "${http.apiUrl()}/v1/user/auth",
+          header: {'Content-Type': 'application/json; charset=UTF-8'},
           body: loginModel.toJson());
-      if (response.statusCodeIsOk) return UserModel.fromJson(response.body);
-      throw Exception();
+      if (response.statusCodeIsOk) return AuthModel.fromJson(response.body);
+
+      throw Exception('AuthenticantionException');
     } catch (e) {
       rethrow;
     }
   }
+
+
 }
