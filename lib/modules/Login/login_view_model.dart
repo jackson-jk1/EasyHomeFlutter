@@ -58,9 +58,27 @@ class LoginViewModel extends GetxController {
       //Get.offAllNamed(AppRoutes.realEstateList);
       processLogin();
       Get.offAllNamed(AppRoutes.realEstateList);
-      sendToApi(file);
+      //sendToApi(file);
       //processLogin();
     }
+  }
+
+  Future<bool?> validateRegister(BuildContext context, File? file) async {
+    log("Entrou no validateRegister");
+    try{
+      NewUserModel newUserModel = NewUserModel(
+          email: emailController.value.text,
+          password: passwordController.value.text,
+          name: nomeController.value.text,
+          telefone: telefoneController.value.text,
+          image: ''
+      );
+      sendToApi(context, file);
+    } catch (e) {
+      log("Erro ao enviar dados para a API");
+      log(e.toString());
+    }
+    return null;
   }
 
   processLogin() async {
@@ -71,7 +89,7 @@ class LoginViewModel extends GetxController {
     }
   }
 
-  sendToApi(File? file) async {
+  sendToApi(BuildContext context, File? file) async {
     try{
       NewUserModel newUserModel = NewUserModel(
         email: emailController.value.text,
@@ -80,11 +98,12 @@ class LoginViewModel extends GetxController {
         telefone: telefoneController.value.text,
         image: ''
       );
-      controller.uploadImage(file, newUserModel);
-      /*log(newUserModel.email);
-      log(newUserModel.password);
-      log(newUserModel.name);
-      log(newUserModel.telefone);*/
+      if (await controller.uploadImage(file, newUserModel)){
+        success(context);
+      }
+      else{
+        error(context);
+      }
     } catch (e) {
       log("Erro ao enviar dados para a API");
     }
@@ -132,4 +151,42 @@ class LoginViewModel extends GetxController {
     }
     if (name.length < 6) return 'Nome invalido';
   }
+}
+
+@override
+Future<String?> success(BuildContext context) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Atenção!'),
+      content: const Text('Conta criada com sucesso!'),
+      actions: [
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK'),
+            Get.offAllNamed(AppRoutes.login)
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+
+@override
+Future<String?> error(BuildContext context) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Atenção!'),
+      content: const Text('Erro na criação da conta!'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK'),
+            Get.offAllNamed(AppRoutes.login)
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
 }
