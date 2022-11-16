@@ -8,6 +8,8 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'edit_profile_page.dart';
 import 'package:easy_home/shared/widgets/build_button.dart';
+import 'profile_view_model.dart';
+import '../../data/repository/user_repository.dart';
 
 import '../../menu_layout.dart';
 
@@ -27,7 +29,7 @@ class ViewProfile extends StatelessWidget {
   }
 }
 
-class BuildPage extends StatelessWidget {
+class BuildPage extends GetWidget<ProfileViewModel> {
   const BuildPage({
     Key? key,
   }) : super(key: key);
@@ -67,7 +69,6 @@ class BuildPage extends StatelessWidget {
                       width: 160,
                       height: 160,
                       fit: BoxFit.cover,
-
                     )
                         :  Image.asset(
                       'images/no_user.jpg',
@@ -157,7 +158,7 @@ class BuildPage extends StatelessWidget {
                       height: 16,
                     ),
                     ElevatedButton(
-                        onPressed: () => const EditProfile(),
+                        onPressed: () => controller.processProfile(),//const EditProfile(),
                         style: ElevatedButton.styleFrom(
                             minimumSize: Size(Get.width, Get.height * 0.05)),
                         child:

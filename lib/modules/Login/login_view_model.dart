@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:easy_home/data/model/generic_response_model.dart';
-import 'package:easy_home/data/repository/register_repository.dart';
+import 'package:easy_home/data/repository/user_repository.dart';
 import 'package:easy_home/shared/widgets/error_dialog.dart';
 import 'package:date_field/date_field.dart';
 import 'package:get/get.dart';
@@ -16,14 +16,12 @@ import '../../data/model/user_model.dart';
 import '../../data/repository/login_repository.dart';
 import '../../routes/app_routes.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import './controller.dart';
 
 
 class LoginViewModel extends GetxController {
   final LoginRepository injectedLoginRepository;
-  final RegisterRepository injectedRegisterRepository;
+  final UserRepository injectedRegisterRepository;
   final AuthModel injectedAuthModel;
-  final storage = const FlutterSecureStorage();
 
   LoginViewModel({required this.injectedLoginRepository, required this.injectedRegisterRepository, required this.injectedAuthModel});
 
@@ -141,8 +139,10 @@ class LoginViewModel extends GetxController {
 
 
   initSession(AuthModel authModel) async {
+    String? retorno = await injectedLoginRepository.getToken();
     //injectedUserModel.id = userModel.id;
     injectedLoginRepository.saveToken(authModel.token);
+    log(retorno!);
     //injectedUserModel.email = userModel.email;
   }
 

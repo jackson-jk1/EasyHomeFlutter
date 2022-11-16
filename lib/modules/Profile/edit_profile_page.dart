@@ -8,9 +8,11 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_home/shared/widgets/build_button.dart';
 
+import '../../data/repository/user_repository.dart';
 import '../../menu_layout.dart';
 
 class EditProfile extends StatelessWidget {
+  //final RegisterRepository injectedRegisterRepository;
   const EditProfile({Key? key}) : super(key: key);
 
   @override

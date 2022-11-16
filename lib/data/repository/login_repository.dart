@@ -4,12 +4,13 @@ import 'package:get/get.dart';
 import '../model/auth_model.dart';
 import '../provider/api/http_client.dart';
 import '../provider/storage/storage_keys.dart';
+import 'package:get/instance_manager.dart';
 
 class LoginRepository {
   final HttpClient http;
-  final StorageKeys storage;
+  final StorageKeys storage = new StorageKeys();
 
-  LoginRepository({required this.storage, required this.http});
+  LoginRepository({required this.http});
 
   Future<AuthModel?> makeLogin(LoginModel loginModel) async {
     try {
@@ -30,5 +31,8 @@ class LoginRepository {
     storage.store(token: token);
   }
 
+  Future<String?> getToken(){
+    return storage.readToken();
+  }
 
 }

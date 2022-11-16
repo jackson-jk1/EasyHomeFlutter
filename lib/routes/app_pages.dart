@@ -4,6 +4,7 @@ import 'package:easy_home/modules/Reset_password/reset_pass_binding.dart';
 import 'package:easy_home/modules/Reset_password/reset_pass_page.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list_binding.dart';
+import 'package:easy_home/modules/Profile/profile_binding.dart';
 import 'package:get/get.dart';
 
 import '../modules/Profile/view_profile_page.dart';
@@ -56,7 +57,8 @@ class AppPages {
         name: AppRoutes.profile,
         page: () => const ViewProfile(),
         transition: Transition.fade,
-        transitionDuration: const Duration(milliseconds: 500)),
+        transitionDuration: const Duration(milliseconds: 500),
+        binding: ProfileBinding()),
     GetPage(
         name: AppRoutes.resetPassword,
         page: () => const ResetPassword(),
