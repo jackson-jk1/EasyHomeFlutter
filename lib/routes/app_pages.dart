@@ -1,5 +1,6 @@
 import 'package:easy_home/modules/Dev_data/dev_data_page.dart';
 import 'package:easy_home/modules/Contact/contact_page.dart';
+import 'package:easy_home/modules/Profile/edit_profile_page.dart';
 import 'package:easy_home/modules/Reset_password/reset_pass_binding.dart';
 import 'package:easy_home/modules/Reset_password/reset_pass_page.dart';
 import 'package:easy_home/modules/real_estate_list/real_estate_list.dart';
@@ -7,7 +8,7 @@ import 'package:easy_home/modules/real_estate_list/real_estate_list_binding.dart
 import 'package:easy_home/modules/Profile/profile_binding.dart';
 import 'package:get/get.dart';
 
-import '../modules/Profile/view_profile_page.dart';
+import '../modules/Profile/profile_view_page.dart';
 import '../modules/Login/login_binding.dart';
 import '../modules/Login/login_page.dart';
 
@@ -56,6 +57,12 @@ class AppPages {
     GetPage(
         name: AppRoutes.profile,
         page: () => const ViewProfile(),
+        transition: Transition.fade,
+        transitionDuration: const Duration(milliseconds: 500),
+        binding: ProfileBinding()),
+    GetPage(
+        name: AppRoutes.editProfile,
+        page: () =>  EditProfile(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500),
         binding: ProfileBinding()),

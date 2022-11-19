@@ -202,7 +202,6 @@ Future<String?> errorRegister(BuildContext context, String? response) {
       actions: <Widget>[
         TextButton(
           onPressed: () => {Navigator.pop(context, 'OK'),
-            Get.offAllNamed(AppRoutes.login)
           },
           child: const Text('OK'),
         ),

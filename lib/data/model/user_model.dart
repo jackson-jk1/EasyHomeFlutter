@@ -17,7 +17,7 @@ class UserModel {
         cellPhone = json['cellPhone'],
         email = json['email'],
         password = json['password'],
-        image = json['image'],
+        image =  json['image'],
         userPreferences = json['userPreferences'],
         id = json['id'];
 

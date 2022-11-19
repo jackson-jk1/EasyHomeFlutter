@@ -38,7 +38,32 @@ class UserRepository {
 
   }
 
-  Future<UserModel?> getProfile() async {
+  Future<GenericResponseModel> updateUser(File? file, NewUserModel user) async {
+    String? retorno = await storage.readToken();
+    var request =
+    http.MultipartRequest('Put', Uri.parse('${Http.apiUrl()}/v1/user'));
+
+    request.headers["authorization"]= 'Bearer ${retorno}';
+    request.fields['Name'] = user.name.toString();
+    request.fields['CellPhone'] = user.telefone.toString();
+    request.fields['Email'] = user.email.toString();
+    request.fields['Password'] = user.password.toString();
+
+    request.files.add(http.MultipartFile.fromBytes(
+        'Image', File(file!.path).readAsBytesSync(), filename: file!
+        .path
+        .split('/')
+        .last));
+    var res = await request.send();
+    var resBody = await http.Response.fromStream(res);
+    final responseData = jsonDecode(resBody.body);
+    log(responseData.toString());
+
+    return GenericResponseModel.fromJson(responseData);
+
+  }
+
+  Future<UserModel> getProfile() async {
     try {
       String? retorno = await storage.readToken();
       final response = await Http.get(
@@ -52,11 +77,7 @@ class UserRepository {
       log(retorno!);
       log(response.statusCode.toString());
       log(response.body.toString());
-    if (response.statusCodeIsOk) return UserModel.fromJson(response.body);
-    //if(response.statusCode == 401) return UserModel.fromJson(response.body);
-    else return null;
-
-    //throw Exception('AuthenticantionException');
+      return UserModel.fromJson(response.body);
     } catch (e) {
     rethrow;
     }
