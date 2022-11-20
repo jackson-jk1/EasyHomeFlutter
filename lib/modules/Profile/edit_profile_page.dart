@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:easy_home/shared/widgets/build_button.dart';
 import '../../menu_layout.dart';
+import 'package:easy_home/data/provider/api/http_client.dart';
 
 class EditProfile extends GetWidget<ProfileViewModel> {
   EditProfile({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class EditProfile extends GetWidget<ProfileViewModel> {
 }
 
 class BuildPage extends GetWidget<ProfileViewModel> {
+  final HttpClient? Http = null;
    BuildPage({
     Key? key,
   }) : super(key: key);
@@ -94,7 +96,9 @@ class BuildPage extends GetWidget<ProfileViewModel> {
                                ),
                             )
                               : ProfileWidget(
-                            imagePath: 'https://b600-138-118-169-27.sa.ngrok.io/Imagens/' + user.image,
+                            //imagePath: 'https://b600-138-118-169-27.sa.ngrok.io/Imagens/' + user.image,
+                            //imagePath: Uri.parse('${Http?.apiUrl()}/Imagens/' + user.image).toString(),
+                            imagePath: 'https://2f28-2804-7f4-378f-f04c-f422-34ee-d626-253f.sa.ngrok.io/Imagens/' + user.image,
                             onClicked: () async {},
                           ),
                           const SizedBox(height: 14),

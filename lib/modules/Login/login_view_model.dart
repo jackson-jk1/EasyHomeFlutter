@@ -140,9 +140,9 @@ class LoginViewModel extends GetxController {
 
   initSession(AuthModel authModel) async {
     String? retorno = await injectedLoginRepository.getToken();
+    if (retorno != null) log(retorno!);
     //injectedUserModel.id = userModel.id;
     injectedLoginRepository.saveToken(authModel.token);
-    log(retorno!);
     //injectedUserModel.email = userModel.email;
   }
 

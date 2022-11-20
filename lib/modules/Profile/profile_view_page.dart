@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../data/model/user_model.dart';
 import 'profile_view_model.dart';
 import '../../menu_layout.dart';
+import 'package:easy_home/data/provider/api/http_client.dart';
 
 class ViewProfile extends GetWidget<ProfileViewModel> {
   const ViewProfile({Key? key}) : super(key: key);
@@ -28,6 +29,7 @@ class ViewProfile extends GetWidget<ProfileViewModel> {
 }
 
 class BuildPage extends GetWidget<ProfileViewModel> {
+  final HttpClient? Http = null;
   const BuildPage({
     Key? key,
   }) : super(key: key);
@@ -65,7 +67,9 @@ class BuildPage extends GetWidget<ProfileViewModel> {
                       children: [
                         const SizedBox(height: 24),
                         ProfileWidget(
-                          imagePath: 'https://b600-138-118-169-27.sa.ngrok.io/Imagens/' + user.image,
+                          //imagePath: 'https://b600-138-118-169-27.sa.ngrok.io/Imagens/' + user.image,
+                          //imagePath: Uri.parse('${Http?.apiUrl()}/Imagens/' + user.image).toString(),
+                          imagePath: 'https://2f28-2804-7f4-378f-f04c-f422-34ee-d626-253f.sa.ngrok.io/Imagens/' + user.image,
                           onClicked: () async {},
                         ),
                         const SizedBox(height: 24),
@@ -75,7 +79,6 @@ class BuildPage extends GetWidget<ProfileViewModel> {
                         const SizedBox(height: 48),
                       ],
                     ),
-
                 ],
               ),
             ),
@@ -88,20 +91,29 @@ class BuildPage extends GetWidget<ProfileViewModel> {
     }
   Widget buildName(UserModel user) => Column(
     children: [
-      Text(
+    Padding(
+      padding: EdgeInsets.all(5),
+      child: Text(
         user.name,
         style: TextStyle(color: AppColors.white, fontWeight: FontWeight.bold, fontSize: 24),
-      ),
+      )
+    ),
       const SizedBox(height: 4),
-      Text(
-        user.email,
-        style: TextStyle(color: AppColors.white,fontSize:18),
-      ),
+    Padding(
+    padding: EdgeInsets.all(1),
+    child: Text(
+          user.email,
+          style: TextStyle(color: AppColors.white,fontSize:18),
+        )
+    ),
       const SizedBox(height: 4),
-      Text(
+    Padding(
+    padding: EdgeInsets.all(1),
+    child: Text(
         user.cellPhone,
         style: TextStyle(color: AppColors.white,fontSize:18),
       )
+    )
     ],
   );
 

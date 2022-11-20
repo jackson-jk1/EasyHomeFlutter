@@ -48,12 +48,14 @@ class UserRepository {
     request.fields['CellPhone'] = user.telefone.toString();
     request.fields['Email'] = user.email.toString();
     request.fields['Password'] = user.password.toString();
-
-    request.files.add(http.MultipartFile.fromBytes(
-        'Image', File(file!.path).readAsBytesSync(), filename: file!
-        .path
-        .split('/')
-        .last));
+    log(file.toString());
+    if (file != null) {
+      request.files.add(http.MultipartFile.fromBytes(
+          'Image', File(file!.path).readAsBytesSync(), filename: file!
+          .path
+          .split('/')
+          .last));
+    }
     var res = await request.send();
     var resBody = await http.Response.fromStream(res);
     final responseData = jsonDecode(resBody.body);
