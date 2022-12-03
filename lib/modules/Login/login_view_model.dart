@@ -65,14 +65,19 @@ class LoginViewModel extends GetxController {
   }
 
   Future<bool?> validateRegister(BuildContext context, File? file) async {
-    log("Entrou no validateRegister");
-    try{
-      sendToApi(context, file);
-    } catch (e) {
-      log("Erro ao enviar dados para a API");
-      log(e.toString());
+    if (file == null) {
+      errorImageRegister(context);
     }
-    return null;
+    else {
+      log("Entrou no validateRegister");
+      try {
+        sendToApi(context, file);
+      } catch (e) {
+        log("Erro ao enviar dados para a API");
+        log(e.toString());
+      }
+      return null;
+    }
   }
 
   processLogin(BuildContext context) async {
@@ -199,6 +204,24 @@ Future<String?> errorRegister(BuildContext context, String? response) {
       content: response != null
             ? Text(response)
             : Text('Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => {Navigator.pop(context, 'OK'),
+          },
+          child: const Text('OK'),
+        ),
+      ],
+    ),
+  );
+}
+
+@override
+Future<String?> errorImageRegister(BuildContext context) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) => AlertDialog(
+      title: const Text('Erro!'),
+      content: Text('Foto de perfil não escolhida, verifique as informações preenchidas novamente.'),
       actions: <Widget>[
         TextButton(
           onPressed: () => {Navigator.pop(context, 'OK'),

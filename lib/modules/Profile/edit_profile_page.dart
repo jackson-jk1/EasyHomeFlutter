@@ -98,7 +98,7 @@ class BuildPage extends GetWidget<ProfileViewModel> {
                               : ProfileWidget(
                             //imagePath: 'https://b600-138-118-169-27.sa.ngrok.io/Imagens/' + user.image,
                             //imagePath: Uri.parse('${Http?.apiUrl()}/Imagens/' + user.image).toString(),
-                            imagePath: 'https://2f28-2804-7f4-378f-f04c-f422-34ee-d626-253f.sa.ngrok.io/Imagens/' + user.image,
+                            imagePath: 'https://1841-2804-7f4-378f-f04c-491d-940e-8e27-3137.sa.ngrok.io/Imagens/' + user.image,
                             onClicked: () async {},
                           ),
                           const SizedBox(height: 14),
