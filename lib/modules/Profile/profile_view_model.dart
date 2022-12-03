@@ -1,22 +1,13 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:easy_home/data/model/generic_response_model.dart';
 import 'package:easy_home/data/repository/user_repository.dart';
-import 'package:easy_home/shared/widgets/error_dialog.dart';
-import 'package:date_field/date_field.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../data/model/login_model.dart';
-import '../../data/model/auth_model.dart';
 import '../../data/model/new_user_model.dart';
 import '../../data/model/user_model.dart';
-import '../../data/repository/user_repository.dart';
 import '../../routes/app_routes.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 
 class ProfileViewModel extends GetxController {
@@ -51,7 +42,6 @@ class ProfileViewModel extends GetxController {
     }
 
   updateUser(BuildContext context, File? file) async {
-    //try{
     NewUserModel newUserModel = NewUserModel(
         email: emailController.value.text,
         password: "*********",
@@ -73,6 +63,7 @@ class ProfileViewModel extends GetxController {
       log('erro api');
     }
   }
+
   Future<String?> success(BuildContext context, String? response) {
     return showDialog<String>(
       context: context,

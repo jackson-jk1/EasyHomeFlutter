@@ -7,8 +7,10 @@ import '../../data/provider/api/http_client.dart';
 class RealEstateListBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => RealEstateListController(
-        injectedRealEstateRepository: Get.put(
-            RealEstateRepository(injectedHttp: Get.find<HttpClient>()))));
+    Get.lazyPut(
+            () => RealEstateListController(
+            injectedRealEstateRepository: 
+            Get.put(RealEstateRepository(Http: Get.find<HttpClient>())),
+            ));
   }
 }
