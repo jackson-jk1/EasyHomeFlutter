@@ -79,7 +79,6 @@ flutter:
      - imagens/User.png
      - imagens/imovel_exemplo.jpg
      - imagens/sem_imagem.png
-     - imagens/Logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

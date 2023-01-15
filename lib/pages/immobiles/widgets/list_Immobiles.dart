@@ -35,8 +35,11 @@ class _ImmobilesListState extends State<ImmobilesList> {
   @override
   Widget build(BuildContext context) {
 
-          return
-          Column (
+          return WillPopScope(
+              onWillPop: () async {
+            return false;
+          },
+          child: Column (
             children: [
              Row(children: <Widget>[
               Expanded(
@@ -184,7 +187,11 @@ class _ImmobilesListState extends State<ImmobilesList> {
                         ),
                       );
                     },
-                  );
+                  ).whenComplete(() {
+                    super.setState(() {
+                      getImmobiles = widget.controller.getImmobiles(filters);
+                    });
+                  });
                 },
               ))
              ]),
@@ -296,12 +303,18 @@ class _ImmobilesListState extends State<ImmobilesList> {
                               ),
                             );
                           }
-                          return ListTile(
-                              title: Text("Sem imoveis no momento")
+                          return Stack(
+                            children: <Widget>[
+                              Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              Center(
+                                child: Text("Loading...", style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
                           );
                         }
                     );
-
                   }
               )
           ),
@@ -349,8 +362,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                 ),
                ],
               ),
-
          ]
-        );
+        ));
      }
   }

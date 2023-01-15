@@ -11,11 +11,12 @@ class Immobile {
   String address;
   List<dynamic> images = [];
   String map;
-  Bool isActive;
+  bool isActive;
+  String siteUrl;
 
 
   Immobile({required this.id, required this.title, required this.rooms,required this.desc, required this.price,
-    required this.address, required this.images, required this.map, required this.isActive});
+    required this.address, required this.images, required this.map, required this.isActive, required this.siteUrl});
 
   Immobile.fromJson(Map<String, dynamic> json)
       :
@@ -27,6 +28,7 @@ class Immobile {
         address = json["Address"],
         images = json["Imgs"],
         map = json["Map"],
-        isActive = json["isActive"];
+        isActive = json["IsActive"] as bool,
+        siteUrl = json["SiteUrl"];
 
 }

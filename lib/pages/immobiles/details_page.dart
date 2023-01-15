@@ -223,8 +223,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                             iconSize: 22,
                                                             icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
                                                                 onPressed: () async {
-                                                                  var contact = "+5541995366198" ;
-                                                                  var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
+                                                                  var contact = "+55" + u.cellPhone;
+                                                                  var androidUrl = "whatsapp://send?phone=$contact";
                                                                       await launchUrl(Uri.parse(androidUrl));
                                                                 },
                                                            )
@@ -371,7 +371,31 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       height: 1.5,
                     ),
                   ),
-                )
+                ),
+                  Padding(
+                  padding: EdgeInsets.only(
+                  left: 30,
+                  right: 30,
+                  bottom: 30 * 4,
+                  ),
+                  child:
+                  ElevatedButton(
+                  style: ButtonStyle(
+                  backgroundColor : MaterialStateProperty.all(AppColors.yellow)
+                  ),
+                  onPressed: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WebViewScreen(
+                          url: widget.imm.siteUrl,
+                        ),
+                      ),
+                    );
+                  },
+                  child: const Text("Ver na Fonte"),
+               )
+               )
               ],
             ),
             ),

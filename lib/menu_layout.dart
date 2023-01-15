@@ -38,10 +38,10 @@ class MenuDashboardPage extends StatelessWidget {
             onTap: () => { Get.offAllNamed(AppRoutes.realEstateList)},
           ),
           ListTile(
-            leading: const Icon(Icons.verified_user),
-            title: const Text('Feedback',
+            leading: const Icon(Icons.password),
+            title: const Text('Alterar Senha',
                 style: TextStyle(color: Colors.white)),
-            onTap: () => {Get.offAllNamed(AppRoutes.contact)},
+            onTap: () => {Get.offAllNamed(AppRoutes.editPassword)},
           ),
           ListTile(
             leading: const Icon(Icons.person),

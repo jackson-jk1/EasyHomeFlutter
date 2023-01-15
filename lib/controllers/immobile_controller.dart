@@ -103,7 +103,6 @@ class ImmobileController {
 
 
     var tagObjsJson = response.body['data'] as List;
-    dev.log(response.body['data']);
     List<User> users = tagObjsJson.map((u) => User.fromJson(u)).toList();
     return users;
   }
@@ -121,7 +120,7 @@ class ImmobileController {
 
 
     var tagObjsJson = response.body['data']  as List;
-
+    dev.log(response.body['data'].toString());
     List<Immobile> immobiles = tagObjsJson.map((imm) => Immobile.fromJson(imm)).toList();
     return immobiles;
   }

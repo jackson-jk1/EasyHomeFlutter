@@ -9,6 +9,7 @@ abstract class AppRoutes {
   static const profile = '/profile';
   static const favorite = '/favorite';
   static const editProfile = '/edit_profile_page';
+  static const editPassword = '/edit_password_page';
   static const resetPassword = '/reset_password';
   static const splash = '/splash';
 }

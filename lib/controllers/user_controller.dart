@@ -103,6 +103,25 @@ class UserController {
     }
   }
 
+  changePassword(Map<String, String> updatePassword) async{
+    try {
+      String? retorno = await injectedStorage.readToken();
+      final response = await injectedHttp.put(
+        url: "${injectedHttp.apiUrl()}/v1/user/password",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${retorno}'},
+        body: updatePassword,
+      );
+      return GenericResponse.fromJson(response.body);
+
+      //throw Exception();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   Future<User> getProfile() async {
     try {
       String? retorno = await injectedStorage.readToken();

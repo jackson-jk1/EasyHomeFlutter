@@ -64,7 +64,7 @@ class _ImmobilesListState extends State<FavoriteList> {
                             listTam = lista.length;
                             Immobile i = lista[index];
                             return GestureDetector(
-                              onTap: () {
+                              onTap: i.isActive == false ? null : () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -85,7 +85,94 @@ class _ImmobilesListState extends State<FavoriteList> {
                                       margin: const EdgeInsets.symmetric(horizontal: 2),
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
-                                        child: Row(
+                                        child: i.isActive == false
+                                            ? Opacity(
+                                          opacity: 0.5,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      ClipRRect(
+                                                          borderRadius: BorderRadius.circular(10.0),
+                                                          child:Image.network(
+                                                            i.images.firstWhere((element) => element.toString() != null,
+                                                                orElse: () => 'imagens/sem_imagem.png'),
+                                                            width: 80,
+                                                            height: 80,
+                                                            fit:BoxFit.fill,
+                                                            errorBuilder:
+                                                                (context, error, stackTrace) {
+                                                              return Image.asset(
+                                                                'imagens/sem_imagem.png',
+                                                                width: 80,
+                                                                height: 80,
+                                                                fit:BoxFit.fill,
+
+                                                              );
+                                                            },
+                                                          )
+                                                      ),
+                                                    ],
+                                                  )),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisSize: MainAxisSize.max,
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        i.title.trimLeft(),
+                                                        textAlign: TextAlign.left,
+                                                        style: TextStyle(color: Colors.white),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                      Row(
+                                                        children: <Widget>[
+                                                          Text(
+                                                            "R\$:" + i.price.toString(),
+                                                            textAlign: TextAlign.left,
+                                                            style: TextStyle(color: Colors.white),
+                                                          ),
+                                                          Spacer(),
+                                                          InkWell(
+                                                            onTap: () async {
+                                                              await widget.controller.removePreference(i.id, context);
+                                                              setState(() {
+                                                                getImmobiles = widget.controller.getFavorites(filters);
+
+                                                              });
+                                                            },
+                                                            child: Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(color: AppColors.yellow.withOpacity(0.4), width:2,),
+                                                                  borderRadius: BorderRadius.circular(15)
+                                                              ),
+                                                              child:
+                                                              Icon(Icons.delete,color: AppColors.yellow,),
+                                                            ),
+                                                          ),
+
+                                                        ],
+                                                      ),
+                                                    ],
+                                                  ))
+                                            ],
+                                          ),
+                                        )
+                                            :Row(
                                           children: [
                                             Expanded(
                                                 flex: 1,
@@ -175,8 +262,15 @@ class _ImmobilesListState extends State<FavoriteList> {
                               ),
                             );
                           }
-                          return ListTile(
-                              title: Text("Sem imoveis no momento")
+                          return Stack(
+                            children: <Widget>[
+                              Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                              Center(
+                                child: Text("Loading...", style: TextStyle(color: Colors.white)),
+                              ),
+                            ],
                           );
                         }
                     );

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:easy_home_app/models/user_model.dart';
 import 'package:easy_home_app/pages/Profile/profile_view_model.dart';
+import 'package:easy_home_app/routes/app_routes.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:easy_home_app/widgets/build_button.dart';
 import 'package:easy_home_app/widgets/profile_widget.dart';
@@ -21,14 +22,19 @@ class EditProfile extends GetWidget<ProfileViewModel> {
       home: Scaffold(
       drawer: MenuDashboardPage(),
       appBar: AppBar(title: const Text("Editar Perfil"), backgroundColor: AppColors.background,),
-      body: BuildPage(),
+      body: WillPopScope(
+          onWillPop: () async {
+          Get.offAllNamed(AppRoutes.profile);
+          return false;
+      },
+      child: BuildPage(),
+       )
       ),
     );
   }
 }
 
 class BuildPage extends GetWidget<ProfileViewModel> {
-  final HttpClient? Http = null;
    BuildPage({
     Key? key,
   }) : super(key: key);
@@ -37,7 +43,7 @@ class BuildPage extends GetWidget<ProfileViewModel> {
 
   @override
   Widget build(BuildContext context) {
-
+    Size size = MediaQuery.of(context).size;
     Future<File?> getImage(ImageSource source) async {
       final ImagePicker _picker = ImagePicker();
       // Pick an image

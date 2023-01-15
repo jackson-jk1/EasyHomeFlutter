@@ -5,6 +5,7 @@ import 'package:easy_home_app/pages/favorites/view_models/favorite_view_model.da
 import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
 import '../../menu_layout.dart';
@@ -58,25 +59,20 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                   child: CarouselSlider(
                   options: CarouselOptions(),
                   items: widget.imm.images
-                      .map((item) => Container(
-                    child: Center(
-                        child:
+                      .map((item) =>
                         Image.network(
                             item.toString(),
+                            width: double.infinity,
                             fit: BoxFit.cover,
-                            width: 1000,
-                            errorBuilder:
-                            (context, error, stackTrace) {
+                            errorBuilder: (context, error, stackTrace) {
                             return Image.asset(
-                            'imagens/sem_imagem.png',
-                            fit:BoxFit.cover,
-                            width: 1000,
-
+                              'imagens/sem_imagem.png',
+                              width: double.infinity,
+                              fit: BoxFit.cover,
                             );
                           },
                         )
-                    ),
-                  ))
+                  )
                       .toList(),
                   )),
                   Padding(
@@ -180,7 +176,6 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                       itemBuilder: (context, index){
                                                           List<User> lista = snapshot.data!;
                                                           User u = lista[index];
-                                                          dev.log(u.image);
                                                           return ListTile(
                                                             leading: ClipOval(
                                                               child: Image.network(
@@ -188,6 +183,14 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                                 width: 40,
                                                                 height: 40,
                                                                 fit: BoxFit.cover,
+                                                                errorBuilder: (context, error, stackTrace) {
+                                                                  return Image.asset(
+                                                                    'imagens/sem_imagem.png',
+                                                                    width: 40,
+                                                                    height: 40,
+                                                                    fit: BoxFit.cover,
+                                                                  );
+                                                                },
                                                               ),
                                                             ),
                                                             title:  Text(
@@ -202,19 +205,11 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                             IconButton(
                                                             iconSize: 22,
                                                             icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
-                                                            onPressed: () {
-                                                              var phoneNumber = '5541995366198'; //Número de telefone sem o código do país
-                                                              var message = 'Olá!'; //Mensagem a ser enviada
-                                                              var url = 'https://api.whatsapp.com/send?phone=554199ds5366198';
-                                                              Navigator.push(
-                                                                context,
-                                                                MaterialPageRoute(
-                                                                  builder: (context) => WebViewScreen(
-                                                                    url: url,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            },
+                                                                onPressed: () async {
+                                                                  var contact = "+55" + u.cellPhone;
+                                                                  var androidUrl = "whatsapp://send?phone=$contact";
+                                                                  await launchUrl(Uri.parse(androidUrl));
+                                                             },
                                                            )
                                                           );
                                                       }
@@ -227,6 +222,14 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                       width: 40,
                                                       height: 40,
                                                       fit: BoxFit.cover,
+                                                      errorBuilder: (context, error, stackTrace) {
+                                                        return Image.asset(
+                                                          'imagens/sem_imagem.png',
+                                                          width: 40,
+                                                          height: 40,
+                                                          fit: BoxFit.cover,
+                                                        );
+                                                      },
                                                     ),
                                                   ),
                                                   title: const Text(
@@ -359,6 +362,30 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                       height: 1.5,
                     ),
                   ),
+                ),
+                Padding(
+                    padding: EdgeInsets.only(
+                      left: 30,
+                      right: 30,
+                      bottom: 30 * 4,
+                    ),
+                    child:
+                    ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor : MaterialStateProperty.all(AppColors.yellow)
+                      ),
+                      onPressed: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebViewScreen(
+                              url: widget.imm.siteUrl,
+                            ),
+                          ),
+                        );
+                      },
+                      child: const Text("Ver na Fonte"),
+                    )
                 )
               ],
             ),

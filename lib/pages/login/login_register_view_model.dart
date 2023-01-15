@@ -42,7 +42,6 @@ class LoginViewModel extends GetxController {
     //TO convert Xfile into file
     images = File(image.path);
     (context as Element).markNeedsBuild();
-    var a = emailController.value.text;
     return images;
   }
 
@@ -69,6 +68,7 @@ class LoginViewModel extends GetxController {
       log('erro api');
     }
   }
+
 
   Future<String?> token () async{
     return await injectedLoginRegisterController.injectedStorage.readToken();
@@ -127,16 +127,43 @@ class LoginViewModel extends GetxController {
       errorImageRegister(context);
     }
     else {
-      registerNewUser(context, images!);
-      try {} catch (e) {
-        log("Erro ao enviar dados para a API");
-        log(e.toString());
+      bool termsAccepted = await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Confirmação de termos"),
+            content: Text("Por favor aceite os termos de serviço"),
+            actions: <Widget>[
+              TextButton(
+                child: Text("Aceitar"),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+              TextButton(
+                child: Text("Recusar"),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+            ],
+          );
+        },
+      );
+      if (termsAccepted) {
+        registerNewUser(context, images!);
+        try {} catch (e) {
+          log("Erro ao enviar dados para a API");
+          log(e.toString());
+        }
+        return null;
+      } else {
+        return null;
       }
-      return null;
     }
   }
 
-  @override
+
   Future<String?> success(BuildContext context, String? response) {
     return showDialog<String>(
       context: context,
@@ -160,7 +187,6 @@ class LoginViewModel extends GetxController {
     );
   }
 
-  @override
   Future<String?> errorRegister(BuildContext context, String? response) {
     return showDialog<String>(
       context: context,

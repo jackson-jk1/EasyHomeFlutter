@@ -19,7 +19,12 @@ class FavoritePage extends GetWidget<FavoriteViewModel> {
         title: const Text("Favoritos"),
       ),
       drawer: MenuDashboardPage(),
-      body: FavoriteList(controller: controller)
+      body: WillPopScope(
+        onWillPop: () async {
+      return false;
+      },
+       child: FavoriteList(controller: controller)
+      )
     );
   }
 }

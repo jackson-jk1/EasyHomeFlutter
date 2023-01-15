@@ -22,7 +22,11 @@ class ViewProfile extends GetWidget<ProfileViewModel> {
       home: Scaffold(
         drawer: MenuDashboardPage(),
         appBar: AppBar(title: const Text("Perfil"), backgroundColor: AppColors.background,),
-        body: const BuildPage(),
+        body: WillPopScope(
+          onWillPop: () async {
+        return false;
+        },
+        child: const BuildPage()),
       ),
     );
   }

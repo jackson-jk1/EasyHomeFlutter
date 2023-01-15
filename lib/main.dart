@@ -52,7 +52,9 @@ class NavigationObserver extends NavigatorObserver {
   }
 
   void _saveCurrentRoute(Route route) async {
-    final sharedPref = await SharedPreferences.getInstance();
-    sharedPref.setString("LAST_NAVIGATED_DESTINATION", route.settings.name);
+    if(route.settings.name != null) {
+      final sharedPref = await SharedPreferences.getInstance();
+      sharedPref.setString("LAST_NAVIGATED_DESTINATION", route.settings.name);
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_home_app/routes/app_routes.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,12 @@ class ResetPassword extends GetWidget<ResetPasswordViewModel> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body:
-          Scaffold(
+        body: WillPopScope(
+          onWillPop: () async {
+          Get.offAllNamed(AppRoutes.login);
+          return false;
+          },
+          child: Scaffold(
             backgroundColor: AppColors.background,
             body: SingleChildScrollView(
               reverse: true,
@@ -96,9 +101,8 @@ class ResetPassword extends GetWidget<ResetPasswordViewModel> {
               ),
             ),
           ),
-
-
       ),
+    )
     );
   }
 }
