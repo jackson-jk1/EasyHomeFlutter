@@ -9,18 +9,20 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
-class ImmobileViewModel extends GetxController {
+class FavoriteViewModel extends GetxController {
 
    final ImmobileController injectedImmobileController;
-   ImmobileViewModel({required this.injectedImmobileController});
+   FavoriteViewModel({required this.injectedImmobileController});
 
 
-   Future<List<Immobile>> getImmobiles (Filters filters) async {
-       return await injectedImmobileController.getImmobiles(filters);
+   Future<List<Immobile>> getFavorites (Filters filters) async {
+       return await injectedImmobileController.getFavorites(filters);
     }
-
-   Future<List<Polo>> getPolos() async {
-     return await injectedImmobileController.getPolos();
+   removePreference(int immId, BuildContext context) async {
+     var response  = await injectedImmobileController.removeFavorite(immId);
+     if(response != 200){
+       errorRegister(context);
+     }
    }
 
    Future<List<User>> getinterested (int immId) async {
@@ -45,29 +47,15 @@ class ImmobileViewModel extends GetxController {
      return  await injectedImmobileController.checkList(immId);
    }
 
-   void addPreference(int immId, BuildContext context, bool status) async{
-     var response = status == true
-          ? await injectedImmobileController.addFavorite(immId)
-          : await injectedImmobileController.removeFavorite(immId);
-      if(response != 200){
-        errorRegister(context);
-      }
-
-   }
-
-   void removePreference(int immId, BuildContext context) async{
-     var response  = await injectedImmobileController.removeFavorite(immId);
-     if(response != 200){
-       errorRegister(context);
-     }
-   }
-
    Future<void> goZap (String telefone) async {
-      dev.log(telefone);
-     var link =  Uri.parse("https://wa.me/55${telefone}?text=Ola%2C%20vejo%20que%20compartilhamos%20interesse%20em%20um%20imovel%20em%20comum%2C%20gostaria%20de%20conversar%3F");
-     if (!await launchUrl(link)) {
-       throw 'Could not launch $telefone';
-     }
+      telefone = "55" + telefone;
+      var message = "Olá, vi que você possui interesse em alugar esse imovel gostaria de conversar sobre?";
+      var url = Uri.parse("whatsapp://send?phone=$telefone&text=$message");
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        throw 'Não foi possível abrir o WhatsApp';
+      }
    }
 }
 

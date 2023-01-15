@@ -4,20 +4,25 @@ import 'package:easy_home_app/models/filters_model.dart';
 import 'package:easy_home_app/models/polo_model.dart';
 import 'package:easy_home_app/pages/immobiles/details_page.dart';
 import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
+import 'package:easy_home_app/routes/app_routes.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'dart:developer' as dev;
 
+import '../details_page.dart';
+import '../view_models/favorite_view_model.dart';
 
-class ImmobilesList extends StatefulWidget {
-  final ImmobileViewModel controller;
-  const ImmobilesList({Key? key, required this.controller}) : super(key: key);
+
+class FavoriteList extends StatefulWidget {
+  final FavoriteViewModel controller;
+  const FavoriteList({Key? key, required this.controller}) : super(key: key);
 
   @override
-  State<ImmobilesList> createState() => _ImmobilesListState();
+  State<FavoriteList> createState() => _ImmobilesListState();
 }
 
-class _ImmobilesListState extends State<ImmobilesList> {
+class _ImmobilesListState extends State<FavoriteList> {
   final dropvalue = new ValueNotifier("");
   late Future<List<Immobile>> getImmobiles;
   late Polo polo;
@@ -28,8 +33,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
 
   @override
   void initState() {
-    getImmobiles = widget.controller.getImmobiles(filters);
-    getPolos = widget.controller.getPolos();
+    getImmobiles = widget.controller.getFavorites(filters);
     super.initState();
   }
   @override
@@ -38,156 +42,6 @@ class _ImmobilesListState extends State<ImmobilesList> {
           return
           Column (
             children: [
-             Row(children: <Widget>[
-              Expanded(
-              child: Padding(
-                 padding: const EdgeInsets.fromLTRB(10,10,10,10),
-                 child: ValueListenableBuilder(
-                 valueListenable: dropvalue, builder: (BuildContext context,String value, _){
-                 return Container(
-                  height: 35,
-                  padding: const EdgeInsets.fromLTRB(10,0,0,0),
-                  decoration: BoxDecoration(
-                  border: Border.all(
-                      color: AppColors.yellow),
-                  color: AppColors.secondary, borderRadius: BorderRadius.circular(10)),
-                  child:
-                    FutureBuilder<List<Polo>>(
-                    future: getPolos,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Scaffold(
-                          appBar: AppBar(
-                            title: Text("Error"),
-                          ),
-                          body: Center(
-                            child: Text("${snapshot.error}"),
-                          ),
-                        );
-                      }
-                      List<Polo> polos = snapshot.data ?? <Polo>[];
-                      return DropdownButton(
-                        dropdownColor: AppColors.yellow,
-                        isExpanded: true,
-                        menuMaxHeight: 200,
-                        hint: Text(
-                            "Filtrar por Polos",
-                            style: TextStyle(color: AppColors.white)),
-                        value: (value.isEmpty) ? null : value,
-                        onChanged: (escolha) =>
-                        {
-                          dropvalue.value = escolha.toString(),
-                          setState(() {
-                            filters.polo = escolha.toString();
-                            getImmobiles = widget.controller.getImmobiles(filters);
-                          })
-                        },
-                        items: polos.map((polo) {
-                          return DropdownMenuItem<String>(
-                            value: polo.name,
-                            child: Text(
-                              polo.name,
-                              style: TextStyle(color: AppColors.white),
-                            ),
-                          );
-                        }).toList(),
-                        icon: Icon(
-                          Icons.arrow_drop_down,
-                          color: AppColors.yellow,
-
-                        ),
-                        iconSize: 42,
-                        underline: SizedBox(),
-                      );
-                    }
-                  )
-                );
-               }
-              )
-             )
-            ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10,10,10,10),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    alignment: Alignment.center,
-                    primary: AppColors.yellow
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(keyboard_control_outlined)
-                  ],
-                ),
-                onPressed: () {
-                  showModalBottomSheet<void>(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return Container(
-                        height: 350,
-                        color: AppColors.yellow,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                             StatefulBuilder(builder: (context, setStateSB){
-                               return
-                               Column(
-                                 mainAxisAlignment: MainAxisAlignment.center,
-                                 children: [
-                                   Text(
-                                   "Valor até R\$:" + filters.valueMax.round().toString(),
-                                   style: TextStyle(color: AppColors.white, fontSize: 25),
-                                   ),
-                                   Container(
-                                     padding: const EdgeInsets.fromLTRB(80,0,80,80),
-                                     child: Center(
-                                       child: Slider(
-                                         value: filters.valueMax,
-                                         max: 2000,
-                                         label: filters.valueMax.round().toString(),
-                                         onChanged: (double value) {
-                                           setStateSB(() {
-                                             filters.valueMax = value;
-                                           });
-                                         },
-                                       ),
-                                     ),
-                                   ),
-                                   Text(
-                                     "Nº de quartos: " + filters.rooms.toString(),
-                                     style: TextStyle(color: AppColors.white, fontSize: 25),
-                                   ),
-                                   Container(
-                                     padding: const EdgeInsets.fromLTRB(80,0,80,80),
-                                     child: Center(
-                                       child: Slider(
-                                         value: double.parse(filters.rooms.toString()),
-                                         max: 5,
-                                         divisions: 5,
-                                         label: filters.rooms.round().toString(),
-                                         onChanged: (double value) {
-                                           setStateSB(() {
-                                             filters.rooms = value.round();
-                                           });
-                                         },
-                                       ),
-                                     ),
-                                   )
-                                 ],
-                               );
-                             }),
-
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ))
-             ]),
               Expanded(
               child: FutureBuilder<List<Immobile>>(
                   future: getImmobiles,
@@ -214,7 +68,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) =>  DetailsScreen(imm: i, controller: widget.controller),
+                                    builder: (_) =>  DetailsFavoriteScreen(imm: i, controller: widget.controller),
                                   ),
                                 );
                               },
@@ -280,11 +134,36 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                                     SizedBox(
                                                       height: 8,
                                                     ),
-                                                    Text(
-                                                      "R\$:" + i.price.toString(),
-                                                      textAlign: TextAlign.left,
-                                                      style: TextStyle(color: Colors.white),
-                                                    )
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Text(
+                                                          "R\$:" + i.price.toString(),
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(color: Colors.white),
+                                                        ),
+                                                        Spacer(),
+                                                        InkWell(
+                                                          onTap: () async {
+                                                            await widget.controller.removePreference(i.id, context);
+                                                            setState(() {
+                                                              getImmobiles = widget.controller.getFavorites(filters);
+
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            height: 30,
+                                                            width: 30,
+                                                            decoration: BoxDecoration(
+                                                                border: Border.all(color: AppColors.yellow.withOpacity(0.4), width:2,),
+                                                                borderRadius: BorderRadius.circular(15)
+                                                            ),
+                                                            child:
+                                                            Icon(Icons.delete,color: AppColors.yellow,),
+                                                          ),
+                                                        ),
+
+                                                      ],
+                                                    ),
                                                   ],
                                                 ))
                                           ],
@@ -323,7 +202,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
 
                         filters.page--;
                         dev.log(filters.page.toString());
-                        getImmobiles = widget.controller.getImmobiles(filters);
+                        getImmobiles = widget.controller.getFavorites(filters);
                       });
                     },
                     child: Text('Prev'),
@@ -342,7 +221,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                     setState(() {
                       filters.page++;
                       dev.log(filters.page.toString());
-                      getImmobiles = widget.controller.getImmobiles(filters);
+                      getImmobiles = widget.controller.getFavorites(filters);
                     });
                 },
                 child: Text('Next'),

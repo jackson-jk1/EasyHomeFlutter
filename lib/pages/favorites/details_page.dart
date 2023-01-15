@@ -1,26 +1,26 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_home_app/models/Immobile_model.dart';
 import 'package:easy_home_app/models/user_model.dart';
+import 'package:easy_home_app/pages/favorites/view_models/favorite_view_model.dart';
 import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
 import '../../menu_layout.dart';
 import '../../widgets/web_view.dart';
 
 
-class DetailsScreen extends StatefulWidget {
+class DetailsFavoriteScreen extends StatefulWidget {
 
   Immobile imm;
-  final ImmobileViewModel controller;
-  DetailsScreen({Key? key, required this.imm, required this.controller}) : super(key: key);
+  final FavoriteViewModel controller;
+  DetailsFavoriteScreen({Key? key, required this.imm, required this.controller}) : super(key: key);
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _DetailsScreenState extends State<DetailsFavoriteScreen> {
   late bool status = false;
   late Future<List<User>> getinterested;
 
@@ -105,26 +105,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               Icon(Icons.arrow_back_rounded,color: AppColors.yellow,),
                             ),
                           ),
-                                   InkWell(
-                                    onTap: (){
-                                      setState(() {
-                                       status = !status;
-                                       widget.controller.addPreference(widget.imm.id, context, status);
-                                      });
-                                    },
-                                    child:
-                                       Container(
-                                           height: 50,
-                                           width: 50,
-                                           decoration: BoxDecoration(
-                                             border: Border.all(color: AppColors.yellow.withOpacity(0.4), width:2),
-                                             borderRadius: BorderRadius.circular(15),
-                                           ),
-                                           child: status == false
-                                           ? Icon(Icons.favorite_border_rounded,color: AppColors.yellow)
-                                           : Icon(Icons.favorite,color: AppColors.yellow)
-                                           ),
-                                  )
                         ],
                       ),
                     ),
@@ -180,7 +160,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                         fit: BoxFit.cover,
                                                       ),
                                                     ),
-                                                    title: Text(
+                                                    title: const Text(
                                                         'Sem interessados no Momento',
                                                       style: TextStyle(
                                                           color: Colors.white,
@@ -210,7 +190,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                                 fit: BoxFit.cover,
                                                               ),
                                                             ),
-                                                            title: Text(
+                                                            title:  Text(
                                                               "Telefone: " + u.cellPhone,
                                                               style: TextStyle(
                                                                   color: Colors.white,
@@ -222,11 +202,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                             IconButton(
                                                             iconSize: 22,
                                                             icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
-                                                                onPressed: () async {
-                                                                  var contact = "+5541995366198" ;
-                                                                  var androidUrl = "whatsapp://send?phone=$contact&text=Hi, I need some help";
-                                                                      await launchUrl(Uri.parse(androidUrl));
-                                                                },
+                                                            onPressed: () {
+                                                              var phoneNumber = '5541995366198'; //Número de telefone sem o código do país
+                                                              var message = 'Olá!'; //Mensagem a ser enviada
+                                                              var url = 'https://api.whatsapp.com/send?phone=554199ds5366198';
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                  builder: (context) => WebViewScreen(
+                                                                    url: url,
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            },
                                                            )
                                                           );
                                                       }

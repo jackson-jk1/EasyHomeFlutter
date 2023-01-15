@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:easy_home_app/controllers/user_controller.dart';
 import 'package:easy_home_app/models/token_model.dart';
+import 'package:easy_home_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +11,7 @@ import '../../routes/app_routes.dart';
 
 
 
-class LoginViewModel extends GetxController{
+class LoginViewModel extends GetxController {
   final UserController injectedLoginRegisterController;
 
   LoginViewModel({required this.injectedLoginRegisterController});
@@ -19,7 +20,7 @@ class LoginViewModel extends GetxController{
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController passwordConfirmController = TextEditingController();
-  final TextEditingController telefoneController = TextEditingController();
+  final TextEditingController cellphoneController = TextEditingController();
   final TextEditingController nomeController = TextEditingController();
   final TextEditingController cpfController = TextEditingController();
   final ImagePicker imagePicker = ImagePicker();
@@ -27,9 +28,13 @@ class LoginViewModel extends GetxController{
 
   RxBool switchLogin = false.obs;
 
-  changeSwitchLogin() => switchLogin.toggle().value;
 
-  Future<File?> getImage(BuildContext context ,ImageSource source) async {
+  changeSwitchLogin() =>
+      switchLogin
+          .toggle()
+          .value;
+
+  Future<File?> getImage(BuildContext context, ImageSource source) async {
     final ImagePicker _picker = ImagePicker();
     // Pick an image
     final XFile? image = await _picker.pickImage(source: source);
@@ -37,46 +42,83 @@ class LoginViewModel extends GetxController{
     //TO convert Xfile into file
     images = File(image.path);
     (context as Element).markNeedsBuild();
+    var a = emailController.value.text;
     return images;
   }
 
+  registerNewUser(BuildContext context, File file) async {
+    User newUserModel = User(
+        id: 0,
+        email: emailController.value.text,
+        password: passwordController.value.text,
+        name: nomeController.value.text,
+        cellPhone: cellphoneController.value.text,
+        image: ''
+    );
+    final response = await injectedLoginRegisterController.makeNewUser(
+        file, newUserModel);
+    if (response.statusCode == 201) {
+      log('Retornou 201');
+      success(context, response.response);
+    } else if (response.statusCode == 200) {
+      log('Retornou 200');
+      success(context, response.response);
+    }
+    else {
+      errorRegister(context, response.response);
+      log('erro api');
+    }
+  }
+
+  Future<String?> token () async{
+    return await injectedLoginRegisterController.injectedStorage.readToken();
+  }
   validateForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
       makeLogin(context);
     }
   }
 
+  String? validateEmail(String? email) {
+    return injectedLoginRegisterController.validateEmail(emailController.text);
+  }
+
+  String? validateCellphone(String? cellphone) {
+    if (cellphone == null || cellphone.isEmpty) {
+      return 'Campo Telefone não pode ser nulo';
+    }
+    if (cellphone.length < 6) return 'Telefone invalido';
+  }
+
+  String? validateName(String? name) {
+    return injectedLoginRegisterController.validateName(nomeController.text);
+  }
+
+  String? validateCpf(String? cpf) {
+    return injectedLoginRegisterController.validateCpf(cpfController.text);
+  }
+
+  String? validatePassword(String? cpf) {
+    return injectedLoginRegisterController.validatePassword(passwordController.text);
+  }
 
   makeLogin(BuildContext context) async {
-    final authModel = await injectedLoginRegisterController.makeLogin(emailController.text, passwordController.text);
+    final authModel = await injectedLoginRegisterController.makeLogin(
+        emailController.text, passwordController.text);
     if (authModel == null) {
       log('Retornou null');
       errorLogin(context);
     }
-    else{
+    else {
       initSession(authModel);
       Get.offAllNamed(AppRoutes.realEstateList);
     }
   }
 
   initSession(TokenModel token) async {
-    String? retorno = await injectedLoginRegisterController.injectedStorage.readToken();
+    String? retorno = await injectedLoginRegisterController.injectedStorage
+        .readToken();
     injectedLoginRegisterController.injectedStorage.store(token: token.token);
-  }
-  String? validateEmail(String? email) {
-    if (email == null || email.isEmpty) return 'Campo Email não pode ser nulo';
-
-    return null;
-  }
-
-  String? validatePassword(String? password) {
-    if (password == null || password.isEmpty) {
-      return 'Campo senha não pode ser nulo';
-    }
-
-    if (password.length < 6) return 'Senha muito pequena';
-
-    return null;
   }
 
 
@@ -85,9 +127,8 @@ class LoginViewModel extends GetxController{
       errorImageRegister(context);
     }
     else {
-      log("Entrou no validateRegister");
-      try {
-      } catch (e) {
+      registerNewUser(context, images!);
+      try {} catch (e) {
         log("Erro ao enviar dados para a API");
         log(e.toString());
       }
@@ -95,105 +136,92 @@ class LoginViewModel extends GetxController{
     }
   }
 
-
-  String? validateCellphone(String? cellphone) {
-    if (cellphone == null || cellphone.isEmpty) {
-      return 'Campo Telefone não pode ser nulo';
-    }
-    if (cellphone.length < 6) return 'Telefone invalido';
-   }
-
-
-  String? validateCpf(String? cpf) {
-    if (cpf == null || cpf.isEmpty) {
-      return 'Campo Cpf não pode ser nulo';
-    }
-    if (cpf.length < 6) return 'Cpf invalido';
+  @override
+  Future<String?> success(BuildContext context, String? response) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text('Atenção!'),
+            content: response != null
+                ? Text(response)
+                : Text(
+                'Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
+            actions: [
+              TextButton(
+                onPressed: () =>
+                {Navigator.pop(context, 'OK'),
+                  Get.offAllNamed(AppRoutes.login)
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
   }
 
-  String? validateName(String? name) {
-    if (name == null || name.isEmpty) {
-      return 'Campo Nome não pode ser nulo';
-    }
-    if (name.length < 6) return 'Nome invalido';
+  @override
+  Future<String?> errorRegister(BuildContext context, String? response) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text('Atenção!'),
+            content: response != null
+                ? Text(response)
+                : Text(
+                'Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                {Navigator.pop(context, 'OK'),
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
+  }
+
+
+  @override
+  Future<String?> errorImageRegister(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text('Erro!'),
+            content: Text(
+                'Foto de perfil não escolhida, verifique as informações preenchidas novamente.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                {Navigator.pop(context, 'OK'),
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
+  }
+
+  @override
+  Future<String?> errorLogin(BuildContext context) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text('Atenção!'),
+            content: Text('E-mail ou senha incorretos.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                {Navigator.pop(context, 'OK')
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
   }
 }
-
-@override
-Future<String?> success(BuildContext context, String? response) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Atenção!'),
-      content: response != null
-          ? Text(response)
-          : Text('Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
-      actions: [
-        TextButton(
-          onPressed: () => {Navigator.pop(context, 'OK'),
-            Get.offAllNamed(AppRoutes.login)
-          },
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-@override
-Future<String?> errorRegister(BuildContext context, String? response) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Atenção!'),
-      content: response != null
-            ? Text(response)
-            : Text('Erro no cadastro de novo usuário, verifique as informações preenchidas novamente.'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => {Navigator.pop(context, 'OK'),
-          },
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-
-@override
-Future<String?> errorImageRegister(BuildContext context) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Erro!'),
-      content: Text('Foto de perfil não escolhida, verifique as informações preenchidas novamente.'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => {Navigator.pop(context, 'OK'),
-          },
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-
-@override
-Future<String?> errorLogin(BuildContext context) {
-  return showDialog<String>(
-    context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Atenção!'),
-      content: Text('E-mail ou senha incorretos.'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => {Navigator.pop(context, 'OK')
-          },
-          child: const Text('OK'),
-        ),
-      ],
-    ),
-  );
-}
-

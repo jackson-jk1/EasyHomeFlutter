@@ -1,14 +1,14 @@
-import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
-import 'package:easy_home_app/pages/immobiles/widgets/list_Immobiles.dart';
+import 'package:easy_home_app/pages/favorites/view_models/favorite_view_model.dart';
+import 'package:easy_home_app/pages/favorites/widgets/list_favorite_Immobiles.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../menu_layout.dart';
 
-class ImmobilesPage extends GetWidget<ImmobileViewModel> {
+class FavoritePage extends GetWidget<FavoriteViewModel> {
 
-  const ImmobilesPage({Key? key}) : super(key: key);
+  const FavoritePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +16,10 @@ class ImmobilesPage extends GetWidget<ImmobileViewModel> {
       backgroundColor: AppColors.pages,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text("Lista de imóveis"),
+        title: const Text("Favoritos"),
       ),
       drawer: MenuDashboardPage(),
-      body: ImmobilesList(controller: controller)
+      body: FavoriteList(controller: controller)
     );
   }
 }

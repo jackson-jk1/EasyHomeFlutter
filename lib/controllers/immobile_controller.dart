@@ -102,10 +102,28 @@ class ImmobileController {
     );
 
 
-    var tagObjsJson = response.body['data']  as List;
-
+    var tagObjsJson = response.body['data'] as List;
+    dev.log(response.body['data']);
     List<User> users = tagObjsJson.map((u) => User.fromJson(u)).toList();
     return users;
+  }
+
+  Future<List<Immobile>> getFavorites(Filters filters) async {
+    String? retorno = await injectedStorage.readToken();
+    final response = await injectedHttp.post(
+        url: "${injectedHttp.apiUrl()}/v1/immobiles/getByUser",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${retorno}'},
+        body: filters.toJson()
+    );
+
+
+    var tagObjsJson = response.body['data']  as List;
+
+    List<Immobile> immobiles = tagObjsJson.map((imm) => Immobile.fromJson(imm)).toList();
+    return immobiles;
   }
 
 

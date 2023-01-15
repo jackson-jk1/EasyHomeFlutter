@@ -162,7 +162,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                 visible: controller.switchLogin.value,
                                 child: TextFormField(
                                   style: TextStyle(color: AppColors.white),
-                                  controller: controller.telefoneController,
+                                  controller: controller.cellphoneController,
                                   textInputAction: TextInputAction.next,
                                   decoration: const InputDecoration(labelText: 'Telefone *',
                                     filled: true, //<-- SEE HERE
@@ -203,7 +203,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               visible: controller.switchLogin.value,
                               child: ClipOval(
                                 child: Image.asset(
-                                  'imagens/no_user.jpg',
+                                  'imagens/User.png',
                                   width: 160,
                                   height: 160,
                                   fit: BoxFit.cover,
@@ -256,7 +256,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                 onPressed: () =>  controller.switchLogin.value
                                     ? controller.validateRegister(context)
                                     : controller.validateForm(context),
-                                style: ElevatedButton.styleFrom(
+                                    style: ElevatedButton.styleFrom(
                                     backgroundColor: AppColors.yellow,
                                     minimumSize: Size(Get.width, Get.height * 0.05)),
                                 child:

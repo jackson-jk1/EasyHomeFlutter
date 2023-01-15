@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageKeys extends IStorageKyes {
   final storage = const FlutterSecureStorage();
+  bool isLoggedIn = false;
 
   void store({required token}) {
     storage.write(key: "Token", value: token);
@@ -11,4 +12,15 @@ class StorageKeys extends IStorageKyes {
   Future<String?> readToken() {
     return storage.read(key: "Token");
   }
+
+  Future<bool> isTokenValid() async {
+    final token = await readToken();
+    return token != null;
+  }
+
+  Future<void> checkIfLoggedIn() async {
+    isLoggedIn = await isTokenValid();
+  }
+
 }
+
