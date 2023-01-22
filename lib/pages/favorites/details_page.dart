@@ -194,7 +194,8 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                               ),
                                                             ),
                                                             title:  Text(
-                                                              "Telefone: " + u.cellPhone,
+                                                              //"Telefone: " + u.cellPhone,
+                                                              u.name,
                                                               style: TextStyle(
                                                                   color: Colors.white,
                                                                   fontSize: 20

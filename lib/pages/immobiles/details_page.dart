@@ -211,7 +211,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                               ),
                                                             ),
                                                             title: Text(
-                                                              "Telefone: " + u.cellPhone,
+                                                              //"Telefone: " + u.cellPhone,
+                                                              u.name,
                                                               style: TextStyle(
                                                                   color: Colors.white,
                                                                   fontSize: 20
@@ -275,7 +276,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "R\$: " + widget.imm.price.toString(),
+                            "R\$ " + widget.imm.price.toString(),
                             style: TextStyle(
                               fontSize: 28,
                               color: Colors.white,

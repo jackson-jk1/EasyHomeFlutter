@@ -233,7 +233,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text('Entrar',
+                                const Text('Entrar  ',
                                     style: TextStyle(color: Colors.white)),
                                 FlutterSwitch(
                                  height: 20.0,
@@ -244,7 +244,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                  value: controller.switchLogin.value,
                                  onToggle: (_) => controller.changeSwitchLogin(),
                                 ),
-                                const Text('Cadastrar',
+                                const Text('  Cadastrar',
                                     style: TextStyle(color: Colors.white))
                               ],
                             ),
