@@ -140,7 +140,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                  mainAxisAlignment: MainAxisAlignment.center,
                                  children: [
                                    Text(
-                                   "Valor até R\$:" + filters.valueMax.round().toString(),
+                                   "Valor até R\$: " + filters.valueMax.round().toString(),
                                    style: TextStyle(color: AppColors.white, fontSize: 25),
                                    ),
                                    Container(
@@ -252,14 +252,14 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                                         child:Image.network(
                                                           i.images.firstWhere((element) => element.toString() != null,
                                                               orElse: () => 'imagens/sem_imagem.png'),
-                                                          width: 80,
+                                                          width: 180,
                                                           height: 80,
                                                           fit:BoxFit.fill,
                                                           errorBuilder:
                                                               (context, error, stackTrace) {
                                                             return Image.asset(
                                                               'imagens/sem_imagem.png',
-                                                              width: 80,
+                                                              width: 180,
                                                               height: 80,
                                                               fit:BoxFit.fill,
 
@@ -288,7 +288,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                                       height: 8,
                                                     ),
                                                     Text(
-                                                      "R\$:" + i.price.toString(),
+                                                      "R\$ " + i.price.toString(),
                                                       textAlign: TextAlign.left,
                                                       style: TextStyle(color: Colors.white),
                                                     )
@@ -339,7 +339,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                         getImmobiles = widget.controller.getImmobiles(filters);
                       });
                     },
-                    child: Text('Prev'),
+                    child: Text('Anterior'),
                   ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -358,7 +358,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                       getImmobiles = widget.controller.getImmobiles(filters);
                     });
                 },
-                child: Text('Next'),
+                child: Text('Próxima'),
                 ),
                ],
               ),

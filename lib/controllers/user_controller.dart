@@ -157,7 +157,7 @@ class UserController {
     }
     var passwordRegExp = RegExp(r'^(?=.*[A-Z])(?=.*[!@#<>?":_`~;[\]\\|=+)(*&^%$-])(?=.*[a-z])(?=.*[0-9]).{8,}$');
     if (!passwordRegExp.hasMatch(password)) {
-      return "A senha deve ter pelo menos 8 caracteres, com 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial";
+      return "A senha deve ter pelo menos 8 caracteres, com 1 letra \nmaiúscula, 1 letra minúscula, 1 número e 1 caractere \nespecial";
     }
     return null;
   }

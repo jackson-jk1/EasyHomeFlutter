@@ -181,7 +181,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                       ),
                                                     ),
                                                     title: Text(
-                                                        'Sem interessados no Momento',
+                                                        'Sem interessados no momento',
                                                       style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 20
@@ -242,7 +242,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                     ),
                                                   ),
                                                   title: const Text(
-                                                    'Sem interessados no Momento',
+                                                    'Sem interessados no momento',
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 20
@@ -258,7 +258,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 }
                              );
                           }, child: Text(
-                          "Ver lista de interessado",
+                          "Ver lista de interessados",
                           style: TextStyle(color: AppColors.white, fontSize: 25))
                       ),
                     )),
@@ -362,7 +362,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   padding: EdgeInsets.only(
                     left: 30,
                     right: 30,
-                    bottom: 30 * 4,
+                    bottom: 30,
                   ),
                   child: Text(
                     widget.imm.desc,
@@ -370,6 +370,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       color: Colors.white,
                       height: 1.5,
                     ),
+                    textAlign: TextAlign.justify,
                   ),
                 ),
                   Padding(
