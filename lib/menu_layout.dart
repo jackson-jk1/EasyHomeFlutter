@@ -57,6 +57,18 @@ class MenuDashboardPage extends StatelessWidget {
             onTap: () => {Get.offAllNamed(AppRoutes.favorite)},
           ),
           ListTile(
+            leading: const Icon(Icons.notifications),
+            title: const Text('Notificações',
+                style: TextStyle(color: Colors.white)),
+            onTap: () => {Get.offAllNamed(AppRoutes.notifications)},
+          ),
+          ListTile(
+            leading: const Icon(Icons.contacts),
+            title: const Text('Contacts',
+                style: TextStyle(color: Colors.white)),
+            onTap: () => {Get.offAllNamed(AppRoutes.contacts)},
+          ),
+          ListTile(
             leading: const Icon(Icons.exit_to_app),
             title: const Text('Logout',
                 style: TextStyle(color: Colors.white)),

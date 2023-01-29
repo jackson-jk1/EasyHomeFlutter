@@ -1,22 +1,23 @@
-import 'package:easy_home_app/models/notification_model.dart';
+import 'package:easy_home_app/models/contact_model.dart';
 import 'package:easy_home_app/models/user_model.dart';
-import 'package:easy_home_app/pages/notifications/view_models/notifications_view_model.dart';
+import 'package:easy_home_app/pages/contacts/view_models/contacts_view_model.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
-class NotificationsList extends StatefulWidget {
-  final NotificationViewModel controller;
+class ContactsList extends StatefulWidget {
+  final ContactViewModel controller;
 
-  const NotificationsList({Key? key, required this.controller}) : super(key: key);
+  const ContactsList({Key? key, required this.controller}) : super(key: key);
 
   @override
-  State<NotificationsList> createState() => _NotificationsListState();
+  State<ContactsList> createState() => _ContactsListState();
 }
 
-class _NotificationsListState extends State<NotificationsList> {
+class _ContactsListState extends State<ContactsList> {
 
- // late Future<List<User>> getNotifications;
+ // late Future<List<User>> getContacts;
   @override
   void initState() {
     super.initState();
@@ -26,12 +27,12 @@ class _NotificationsListState extends State<NotificationsList> {
   Widget build(BuildContext context) => Column(children: [
           Expanded(
               child: FutureBuilder<List<User>>(
-                  //future: getNotifications,
+                  //future: getContacts,
                   builder: (context, snapshot){
                     if(snapshot.hasError){
-                      return ListTile(
+                      return const ListTile(
                         title: Text(
-                          'Sem notificações no momento',
+                          'Você não possui contatos',
                           style: TextStyle(
                               color: Colors.white,
                               fontSize: 20
@@ -52,10 +53,9 @@ class _NotificationsListState extends State<NotificationsList> {
                                   User u = lista[index];
                                   dev.log(u.image);
                                   return Container(
-                                      margin: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+                                      margin: const EdgeInsets.fromLTRB(5, 10, 5, 0),
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: AppColors.yellow, width: 2),
-                                        borderRadius: BorderRadius.circular(10),
+                                        border: Border(bottom: BorderSide(color: Colors.white24, width: 2)),
                                       ),
                                       child: ListTile(
                                           leading: ClipOval(
@@ -66,37 +66,32 @@ class _NotificationsListState extends State<NotificationsList> {
                                               fit: BoxFit.cover,
                                             ),
                                           ),
-                                          title: const Text(
-                                            'Deseja adicionar" + u.name + "a lista de contatos?',
-                                            style: TextStyle(
+                                          title: Text(
+                                            u.name,
+                                            style: const TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 16
+                                                fontSize: 20
+
                                             ),
                                           ),
                                           trailing:
-                                          Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                iconSize: 22,
-                                                icon: Icon(Icons.check , color: Colors.lightGreen),
-                                                onPressed: () async {},
-                                              ),
-                                              IconButton(
-                                                iconSize: 22,
-                                                icon: Icon(Icons.cancel , color: Colors.red),
-                                                onPressed: () async {},
-                                              ),
-                                            ],
+                                          IconButton(
+                                            iconSize: 22,
+                                            icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
+                                            onPressed: () async {
+                                              var contact = "+55" + u.cellPhone;
+                                              var androidUrl = "whatsapp://send?phone=$contact";
+                                              await launchUrl(Uri.parse(androidUrl));
+                                            },
                                           )
                                       )
                                   );
                                 }
                             ));
                     }
-                    return ListTile(
+                    return const ListTile(
                       title: Text(
-                        'Sem notificações no momento',
+                        'Você não possui contatos',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 20

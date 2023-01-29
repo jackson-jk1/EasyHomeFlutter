@@ -16,7 +16,7 @@ class NotificationsPage extends GetWidget<NotificationViewModel> {
       backgroundColor: AppColors.pages,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        title: const Text("Lista de Notificações"),
+        title: const Text("Solicitações de Usuários"),
       ),
       drawer: MenuDashboardPage(),
       body: NotificationsList(controller: controller)

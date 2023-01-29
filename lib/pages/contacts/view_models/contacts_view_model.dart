@@ -1,5 +1,5 @@
 import 'package:easy_home_app/controllers/user_controller.dart';
-import 'package:easy_home_app/models/notification_model.dart';
+import 'package:easy_home_app/models/contact_model.dart';
 import 'package:easy_home_app/models/filters_model.dart';
 import 'package:easy_home_app/models/polo_model.dart';
 import 'package:easy_home_app/models/user_model.dart';
@@ -9,17 +9,17 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
-class NotificationViewModel extends GetxController {
+class ContactViewModel extends GetxController {
 
-   final UserController injectedNotificationController;
-   NotificationViewModel({required this.injectedNotificationController});
+   final UserController injectedContactController;
+   ContactViewModel({required this.injectedContactController});
 
 
 
-   Future<List<User>> getNotifications (int userId) async {
-     String? retorno = await injectedNotificationController.injectedStorage.readToken();
-     final response = await injectedNotificationController.injectedHttp.get(
-       url: "${injectedNotificationController.injectedHttp.apiUrl()}/v1/user/getByImm/${userId}",
+   Future<List<User>> getContacts (int userId) async {
+     String? retorno = await injectedContactController.injectedStorage.readToken();
+     final response = await injectedContactController.injectedHttp.get(
+       url: "${injectedContactController.injectedHttp.apiUrl()}/v1/user/getByImm/${userId}",
        header: {
          'Content-Type': 'application/json',
          'Accept': 'application/json',
