@@ -84,18 +84,11 @@ class LoginViewModel extends GetxController {
   }
 
   String? validateCellphone(String? cellphone) {
-    if (cellphone == null || cellphone.isEmpty) {
-      return 'Campo Telefone não pode ser nulo';
-    }
-    if (cellphone.length < 6) return 'Telefone invalido';
+    return injectedLoginRegisterController.validateCellphone(cellphoneController.text);
   }
 
   String? validateName(String? name) {
     return injectedLoginRegisterController.validateName(nomeController.text);
-  }
-
-  String? validateCpf(String? cpf) {
-    return injectedLoginRegisterController.validateCpf(cpfController.text);
   }
 
   String? validatePassword(String? cpf) {

@@ -157,20 +157,20 @@ class UserController {
     }
     var passwordRegExp = RegExp(r'^(?=.*[A-Z])(?=.*[!@#<>?":_`~;[\]\\|=+)(*&^%$-])(?=.*[a-z])(?=.*[0-9]).{8,}$');
     if (!passwordRegExp.hasMatch(password)) {
-      return "A senha deve ter pelo menos 8 caracteres, com 1 letra maiúscula, 1 letra minúscula, 1 número e 1 caractere especial";
+      return "A senha deve ter pelo menos 8 caracteres, com 1 letra \nmaiúscula, 1 letra minúscula, 1 número e 1 caractere \nespecial";
     }
     return null;
   }
 
   String? validateCellphone(String? cellphone) {
-    dev.log('aki');
+    dev.log(cellphone.toString());
     if (cellphone == null || cellphone.isEmpty) {
       return 'Campo Telefone não pode ser nulo';
     }
-    var phoneNumberPattern = r'^\([0-9]{2}\) [0-9]{5}-[0-9]{4}$';
+    var phoneNumberPattern = r'^[1-9]{2}\d{9}$';
     var phoneNumberRegExp = RegExp(phoneNumberPattern);
     if (!phoneNumberRegExp.hasMatch(cellphone)) {
-      return "Formato invalido";
+      return "Formato esperado (DDD) XXXXX-XXXX";
     }
     return null;
   }
@@ -181,18 +181,6 @@ class UserController {
       return 'Campo Nome não pode ser nulo';
     }
     if (name.length < 6) return 'Nome invalido';
-  }
-
-  String? validateCpf(String? cpf) {
-    if (cpf == null || cpf.isEmpty) {
-      return 'Campo Cpf não pode ser nulo';
-    }
-    var cpfPattern = r"^[0-9]{11}$";
-    final cpfRegExp = RegExp(cpfPattern);
-    if (!cpfRegExp.hasMatch(cpf)) {
-      return "Insira um CPF válido sem pontuação";
-    }
-    return null;
   }
 
 }

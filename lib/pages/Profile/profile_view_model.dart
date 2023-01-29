@@ -34,10 +34,7 @@ String? validateEmail(String? email) {
 }
 
   String? validateCellphone(String? cellphone) {
-    if (cellphone == null || cellphone.isEmpty) {
-      return 'Campo Telefone não pode ser nulo';
-    }
-    if (cellphone.length < 6) return 'Telefone invalido';
+    return injectedLoginRegisterController.validateCellphone(telefoneController.text);
   }
 
 String? validateName(String? name) {
