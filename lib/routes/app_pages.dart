@@ -2,8 +2,12 @@
 import 'package:easy_home_app/pages/Change_password/change_pass_page.dart';
 import 'package:easy_home_app/pages/Profile/edit_profile_page.dart';
 import 'package:easy_home_app/pages/Profile/profile_view_page.dart';
+import 'package:easy_home_app/pages/contacts/bidings/contacts_list_binding.dart';
+import 'package:easy_home_app/pages/contacts/contacts_page.dart';
 import 'package:easy_home_app/pages/favorites/favorite_list.dart';
 import 'package:easy_home_app/pages/immobiles/immobiles_page.dart';
+import 'package:easy_home_app/pages/notifications/bidings/notifications_list_binding.dart';
+import 'package:easy_home_app/pages/notifications/notifications_page.dart';
 import 'package:easy_home_app/pages/login/login_register_binding.dart';
 import 'package:easy_home_app/pages/login/login_register_page.dart';
 import 'package:easy_home_app/widgets/splash_screen.dart';
@@ -72,6 +76,20 @@ class AppPages {
       transition: Transition.fade,
       transitionDuration: const Duration(milliseconds: 500),
       binding: ChangePasswordBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.notifications,
+      page: () => const NotificationsPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 500),
+      binding: NotificationsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.contacts,
+      page: () => const ContactsPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 500),
+      binding: ContactsBinding(),
     ),
   ];
 }
