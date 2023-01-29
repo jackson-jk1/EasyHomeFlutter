@@ -123,6 +123,7 @@ class LoginViewModel extends GetxController {
 
 
   Future<bool?> validateRegister(BuildContext context) async {
+    formKey.currentState!.validate();
     if (images == null) {
       errorImageRegister(context);
     }
