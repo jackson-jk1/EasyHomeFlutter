@@ -1,17 +1,17 @@
-class Notification {
+class Notify {
   int id;
   int userId;
   int status;
   String name;
   bool read;
-  Notification({required this.id, required this.userId, required this.status, required this.name, required this.read});
+  Notify({required this.id, required this.userId, required this.status, required this.name, required this.read});
 
-  Notification.fromJson(Map<String, dynamic> json)
+  Notify.fromJson(Map<String, dynamic> json)
       : id = json['Id'],
         userId= json['UserId'],
         status = json['Status'],
         name = json['Name'],
-        read = json['Read'];
+        read = json['Read'] as bool;
 
-  Map<String, dynamic> toJson() => {'id': id, 'userId': userId, 'status' : status, 'name' : name, 'read' : read};
+  Map<String, dynamic> toJson() => {'id': id, 'UserId': userId, 'Status' : status, 'Name' : name, 'Read' : read};
 }

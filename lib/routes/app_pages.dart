@@ -63,6 +63,7 @@ class AppPages {
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500),
         binding: ProfileBinding()),
+
     GetPage(
       name: AppRoutes.resetPassword,
       page: () => const ResetPassword(),

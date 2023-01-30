@@ -1,9 +1,5 @@
 import 'package:easy_home_app/controllers/user_controller.dart';
-import 'package:easy_home_app/models/notification_model.dart';
-import 'package:easy_home_app/models/filters_model.dart';
-import 'package:easy_home_app/models/polo_model.dart';
-import 'package:easy_home_app/models/user_model.dart';
-import 'package:flutter/cupertino.dart';
+import '../../../models/notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,26 +7,13 @@ import 'dart:developer' as dev;
 
 class NotificationViewModel extends GetxController {
 
-   final UserController injectedNotificationController;
-   NotificationViewModel({required this.injectedNotificationController});
+   final UserController injectedController;
+   NotificationViewModel({required this.injectedController});
 
 
 
-   Future<List<User>> getNotifications (int userId) async {
-     String? retorno = await injectedNotificationController.injectedStorage.readToken();
-     final response = await injectedNotificationController.injectedHttp.get(
-       url: "${injectedNotificationController.injectedHttp.apiUrl()}/v1/user/getByImm/${userId}",
-       header: {
-         'Content-Type': 'application/json',
-         'Accept': 'application/json',
-         'Authorization': 'Bearer ${retorno}'},
-     );
-
-     dev.log(response.body.toString());
-     var tagObjsJson = response.body['data'] as List;
-
-     List<User> users = tagObjsJson.map((u) => User.fromJson(u)).toList();
-     return users;
+   Future<List<Notify>> getNotifications () async {
+     return await injectedController.getNotifications();
    }
 
    Future<void> goZap (String telefone) async {
@@ -40,22 +23,80 @@ class NotificationViewModel extends GetxController {
        throw 'Could not launch $telefone';
      }
    }
-}
 
-@override
-Future<String?> errorRegister(BuildContext context) {
+  void readNotifications() {
+      injectedController.readNotifications();
+  }
+
+   addContact(BuildContext context, int contatoId, int notId) async {
+     final response = await injectedController.addContact(contatoId,notId);
+     if (response.statusCode == 201) {
+       success(context, response.response);
+     } else if (response.statusCode == 200) {
+       success(context, response.response);
+     }
+     else {
+       errorRegister(context, response.response);
+     }
+   }
+
+   recuseInvitation(BuildContext context, int userId, int id) async{
+     final response = await injectedController.recuseInvitation(userId,id);
+     if (response.statusCode == 201) {
+       success(context, response.response);
+     } else if (response.statusCode == 200) {
+       success(context, response.response);
+     }
+     else {
+       errorRegister(context, response.response);
+     }
+   }
+
+Future<String?> success(BuildContext context, String? response) {
   return showDialog<String>(
     context: context,
-    builder: (BuildContext context) => AlertDialog(
-      title: const Text('Atenção!'),
-      content: Text('Erro interno, por favor tente novamente mais tarde'),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => {Navigator.pop(context, 'OK'),
-          },
-          child: const Text('OK'),
+    builder: (BuildContext context) =>
+        AlertDialog(
+          title: const Text('Atenção!'),
+          content: response != null
+              ? Text(response)
+              : Text(
+              'Solititação enviada'),
+          actions: [
+            TextButton(
+              onPressed: () {
+              Navigator.pop(context, 'OK');
+              },
+              child: const Text('OK'),
+            ),
+          ],
         ),
-      ],
-    ),
   );
+}
+
+
+
+Future<String?> errorRegister(BuildContext context, String? response) {
+  return showDialog<String>(
+    context: context,
+    builder: (BuildContext context) =>
+        AlertDialog(
+          title: const Text('Atenção!'),
+          content: response != null
+              ? Text(response)
+              : Text(
+              'Erro Interno tente novamente mais tarde'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () =>
+              {Navigator.pop(context, 'OK'),
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+  );
+}
+
+
 }

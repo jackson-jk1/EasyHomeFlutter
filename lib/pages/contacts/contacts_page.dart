@@ -19,7 +19,13 @@ class ContactsPage extends GetWidget<ContactViewModel> {
         title: const Text("Contato"),
       ),
       drawer: MenuDashboardPage(),
-      body: ContactsList(controller: controller)
+      body:
+      WillPopScope(
+          onWillPop: () async {
+            return false;
+          },
+          child: ContactsList(controller: controller)
+      )
     );
   }
 }

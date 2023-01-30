@@ -19,7 +19,12 @@ class NotificationsPage extends GetWidget<NotificationViewModel> {
         title: const Text("Solicitações de Usuários"),
       ),
       drawer: MenuDashboardPage(),
-      body: NotificationsList(controller: controller)
+      body: WillPopScope(
+        onWillPop: () async {
+      return false;
+      },
+      child: NotificationsList(controller: controller)
+     )
     );
   }
 }

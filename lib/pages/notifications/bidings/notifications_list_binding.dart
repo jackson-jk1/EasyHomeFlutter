@@ -11,7 +11,7 @@ class NotificationsBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(
             () => NotificationViewModel(
-              injectedNotificationController:
+              injectedController:
             Get.put(UserController(injectedHttp: Get.find<HttpClient>(), injectedStorage: new StorageKeys())),
             ));
   }

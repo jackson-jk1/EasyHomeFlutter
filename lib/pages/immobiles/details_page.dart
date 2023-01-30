@@ -15,6 +15,7 @@ class DetailsScreen extends StatefulWidget {
 
   Immobile imm;
   final ImmobileViewModel controller;
+
   DetailsScreen({Key? key, required this.imm, required this.controller}) : super(key: key);
   @override
   _DetailsScreenState createState() => _DetailsScreenState();
@@ -147,102 +148,98 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: Center(
                       child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor : MaterialStateProperty.all(AppColors.yellow)
+                              backgroundColor : MaterialStateProperty.all(AppColors.yellow)
                           ),
-                          onPressed: (){
+                          onPressed: () {
                             showModalBottomSheet<void>(
                                 context: context,
                                 builder: (context) {
-                                  Size size = MediaQuery.of(context).size;
                                   return SingleChildScrollView(
-                                    padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                      Container(
-                                       decoration: BoxDecoration(
-                                        color: AppColors.yellow
-                                         ),
-                                      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                      child:
-                                           FutureBuilder<List<User>>(
-                                              future: getinterested,
-                                              builder: (context, snapshot){
-                                                if(snapshot.hasError){
-                                                   return ListTile(
-                                                    leading: ClipOval(
-                                                      child: Image.asset(
-                                                        'imagens/User.png',
-                                                        width: 40,
-                                                        height: 40,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    title: Text(
-                                                        'Sem interessados no momento',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20
-
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                if(snapshot.data?.isEmpty == false){
-                                                  dev.log(snapshot.data.toString());
-                                                  return
-                                                    Expanded(
-                                                     child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: snapshot.data?.length,
-                                                      itemBuilder: (context, index){
-                                                          List<User> lista = snapshot.data!;
-                                                          User u = lista[index];
-                                                          dev.log(u.image);
-                                                          return ListTile(
-                                                            leading: ClipOval(
-                                                              child: Image.network(
-                                                                u.image,
-                                                                width: 40,
-                                                                height: 40,
-                                                                fit: BoxFit.cover,
+                                      padding: EdgeInsets.only(
+                                          bottom: MediaQuery.of(context).viewInsets.bottom
+                                      ),
+                                      child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                  color: AppColors.yellow
+                                              ),
+                                              padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                              child: FutureBuilder<List<User>>(
+                                                  future: getinterested,
+                                                  builder: (context, snapshot) {
+                                                    if (snapshot.hasError) {
+                                                      return ListTile(
+                                                        leading: ClipOval(
+                                                          child: Image.asset(
+                                                            'imagens/User.png',
+                                                            width: 40,
+                                                            height: 40,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        ),
+                                                        title: Text(
+                                                          'Sem interessados no momento',
+                                                          style: TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                    if (snapshot.data?.isEmpty == false) {
+                                                      dev.log(snapshot.data.toString());
+                                                      return Expanded(
+                                                        child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          itemCount: snapshot.data?.length,
+                                                          itemBuilder: (context, index) {
+                                                            List<User> lista = snapshot.data!;
+                                                            User u = lista[index];
+                                                            dev.log(u.image);
+                                                            return ListTile(
+                                                              leading: ClipOval(
+                                                                child: Image.network(
+                                                                  u.image,
+                                                                  width: 40,
+                                                                  height: 40,
+                                                                  fit: BoxFit.cover,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            title: Text(
-                                                              //"Telefone: " + u.cellPhone,
-                                                              u.name,
-                                                              style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 20
-
+                                                              title: Text(
+                                                                u.name,
+                                                                style: TextStyle(
+                                                                    color: Colors.white,
+                                                                    fontSize: 20
+                                                                ),
                                                               ),
-                                                            ),
-                                                            trailing:
-                                                            IconButton(
-                                                            iconSize: 22,
-                                                            icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
+                                                              trailing: IconButton(
+                                                                iconSize: 22,
+                                                                icon: Icon(
+                                                                    Icons.person_add_alt_rounded,
+                                                                    color: AppColors.white
+                                                                ),
                                                                 onPressed: () async {
-                                                                  var contact = "+55" + u.cellPhone;
-                                                                  var androidUrl = "whatsapp://send?phone=$contact";
-                                                                      await launchUrl(Uri.parse(androidUrl));
+                                                                  widget.controller.sendInvitation(context, u.id);
                                                                 },
-                                                           )
-                                                          );
-                                                      }
-                                                    ));
-                                                }
-                                                return ListTile(
-                                                  leading: ClipOval(
-                                                    child: Image.asset(
-                                                      'imagens/User.png',
-                                                      width: 40,
-                                                      height: 40,
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                  title: const Text(
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
+                                                      );
+                                                    }
+                                                    return ListTile(
+                                                      leading: ClipOval(
+                                                        child: Image.asset(
+                                                          'imagens/User.png',
+                                                          width: 40,
+                                                          height: 40,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                     title: const Text(
                                                     'Sem interessados no momento',
                                                     style: TextStyle(
                                                         color: Colors.white,

@@ -4,6 +4,7 @@ import 'package:easy_home_app/models/token_model.dart';
 import 'package:easy_home_app/models/user_model.dart';
 import 'package:easy_home_app/provider/storage/storage_keys.dart';
 import '../models/Immobile_model.dart';
+import '../models/generic_response_model.dart';
 import '../provider/api/http_client.dart';
 import 'dart:convert';
 import 'dart:developer' as dev;
@@ -125,6 +126,20 @@ class ImmobileController {
     return immobiles;
   }
 
-
+  Future<GenericResponse> sendInvitation(int contatoId) async {
+    String? retorno = await injectedStorage.readToken();
+    final response = await injectedHttp.post(
+        url: "${injectedHttp.apiUrl()}/v1/user/sendInvitation/${contatoId}",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${retorno}'
+        },
+        body: {}
+    );
+    var tagObjsJson = response.body['data'];
+    dev.log(response.body['data'].toString());
+    return GenericResponse.fromJson(tagObjsJson);
+  }
 
 }
