@@ -63,8 +63,8 @@ class _NotificationsListState extends State<NotificationsList> {
                           ),
                           child: ListTile(
                             leading: ClipOval(
-                              child: Image.network(
-                                "https://img.clasf.com.br/2020/01/09/Vendas-Casa-Campo-Largo-PR-20200109153543.8340310015.jpg",
+                              child: Image.asset(
+                               'imagens/userAdd.png',
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.cover,
@@ -122,8 +122,8 @@ class _NotificationsListState extends State<NotificationsList> {
                           ),
                           child: ListTile(
                             leading: ClipOval(
-                              child: Image.network(
-                                "https://img.clasf.com.br/2020/01/09/Vendas-Casa-Campo-Largo-PR-20200109153543.8340310015.jpg",
+                              child: Image.asset(
+                                'imagens/userAdd.png',
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.cover,
@@ -147,8 +147,8 @@ class _NotificationsListState extends State<NotificationsList> {
                           ),
                           child: ListTile(
                             leading: ClipOval(
-                              child: Image.network(
-                                "https://img.clasf.com.br/2020/01/09/Vendas-Casa-Campo-Largo-PR-20200109153543.8340310015.jpg",
+                              child: Image.asset(
+                                'imagens/userAdd.png',
                                 width: 40,
                                 height: 40,
                                 fit: BoxFit.cover,

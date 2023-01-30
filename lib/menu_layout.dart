@@ -1,13 +1,34 @@
 
+import 'dart:core';
+
+import 'package:easy_home_app/provider/api/http_client.dart';
+import 'package:easy_home_app/provider/storage/storage_keys.dart';
 import 'package:easy_home_app/routes/app_routes.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import 'dart:developer' as dev;
 
 class MenuDashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final HttpClient injectedHttp = new HttpClient();
+    final StorageKeys injectedStorage = new StorageKeys();
+
+    Future<int> verifyNotification() async {
+      String? retorno = await injectedStorage.readToken();
+      final response = await injectedHttp.get(
+          url: "${injectedHttp.apiUrl()}/v1/user/listNotification",
+          header: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${retorno}'
+          }
+      );
+      var tagObjsJson = response.body['data'].toString();
+      dev.log(tagObjsJson);
+      return tagObjsJson == "[]" ?  0 :  1;
+    }
     return Drawer(
       backgroundColor: AppColors.menuBar,
       child: ListView(
@@ -56,11 +77,25 @@ class MenuDashboardPage extends StatelessWidget {
                 style: TextStyle(color: Colors.white)),
             onTap: () => {Get.offAllNamed(AppRoutes.favorite)},
           ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text('Notificações',
-                style: TextStyle(color: Colors.white)),
-            onTap: () => {Get.offAllNamed(AppRoutes.notifications)},
+          FutureBuilder<int>(
+            future: verifyNotification(),
+            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+              if (snapshot.hasData) {
+                return ListTile(
+                  leading: snapshot.data == 0
+                      ? const Icon(Icons.notifications)
+                      : const Icon(Icons.notification_add, color: Color(0xdef59e16)),
+                  title: snapshot.data == 0
+                      ? const Text('Notificações',
+                      style: TextStyle(color: Colors.white))
+                      : const Text('Notificações',
+                      style: TextStyle(color: Color(0xdef59e16))),
+                  onTap: () => Get.offAllNamed(AppRoutes.notifications),
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
           ),
           ListTile(
             leading: const Icon(Icons.contacts),

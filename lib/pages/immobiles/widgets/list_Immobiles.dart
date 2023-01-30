@@ -19,6 +19,8 @@ class ImmobilesList extends StatefulWidget {
 class _ImmobilesListState extends State<ImmobilesList> {
   final List<String> order = ["Menor Preço", "Maior Preço"];
   final dropvalue = new ValueNotifier("");
+  final dropOrder = new ValueNotifier("");
+
   late Future<List<Immobile>> getImmobiles;
   late Polo polo;
   Filters filters = new Filters(page: 1, polo: "", valueMax: 0, rooms: 0);
@@ -26,6 +28,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
   static const IconData keyboard_control_outlined =
       IconData(0xeea7, fontFamily: 'MaterialIcons');
   int listTam = 1;
+
 
   @override
   void initState() {
@@ -82,8 +85,17 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                         dropvalue.value = escolha.toString(),
                                         setState(() {
                                           filters.polo = escolha.toString();
-                                          getImmobiles = widget.controller
-                                              .getImmobiles(filters);
+                                          if(dropOrder.value == "Menor Preço"){
+                                            getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                            list.sort((a, b) => a.price.compareTo(b.price));
+                                            return list;
+                                            });
+                                          } else{
+                                            getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                              list.sort((a, b) => b.price.compareTo(a.price));
+                                              return list;
+                                            });
+                                          }
                                         })
                                       },
                                       items: polos.map((polo) {
@@ -143,7 +155,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                         child: Center(
                                           child: Slider(
                                             value: filters.valueMax,
-                                            max: 2000,
+                                            max: 5000,
                                             label: filters.valueMax
                                                 .round()
                                                 .toString(),
@@ -190,9 +202,19 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                                 backgroundColor: AppColors.background,
                                                 textStyle:
                                                 TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
-                                            onPressed: () {
+                                              onPressed: () {
                                               super.setState(() {
-                                                getImmobiles = widget.controller.getImmobiles(filters);
+                                                if(dropOrder.value == "Menor Preço"){
+                                                  getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                                    list.sort((a, b) => a.price.compareTo(b.price));
+                                                    return list;
+                                                  });
+                                                } else{
+                                                  getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                                    list.sort((a, b) => b.price.compareTo(a.price));
+                                                    return list;
+                                                  });
+                                                }
                                               });
                                               Navigator.pop(context);
                                             },
@@ -210,17 +232,6 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                           ),
                                         ],
                                       )
-                                      // GestureDetector(onTap: () {
-                                      //   Navigator.pop(context);
-                                      //   getImmobiles = widget.controller.getImmobiles(filters);
-                                      // }, child:
-                                      // Text("Item 1")
-                                      // ),
-                                      // GestureDetector(onTap: () {
-                                      //   Navigator.pop(context);
-                                      // }, child:
-                                      // Text("Item 2")
-                                      // ),
                                     ],
                                   );
                                 }),
@@ -237,7 +248,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                 child: Padding(
                     padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                     child: ValueListenableBuilder(
-                        valueListenable: dropvalue,
+                        valueListenable: dropOrder,
                         builder: (BuildContext context, String value, _) {
                           return Container(
                               height: 35,
@@ -254,11 +265,19 @@ class _ImmobilesListState extends State<ImmobilesList> {
                                               color: AppColors.white)),
                                       value: (value.isEmpty) ? null : value,
                                       onChanged: (escolha) => {
-                                        dropvalue.value = escolha.toString(),
+                                        dropOrder.value = escolha.toString(),
                                         setState(() {
-                                          filters.polo = escolha.toString();
-                                          getImmobiles = widget.controller
-                                              .getImmobiles(filters);
+                                          if(dropOrder.value == "Menor Preço"){
+                                            getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                              list.sort((a, b) => a.price.compareTo(b.price));
+                                              return list;
+                                            });
+                                          } else{
+                                            getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                                              list.sort((a, b) => b.price.compareTo(a.price));
+                                              return list;
+                                            });
+                                          }
                                         })
                                       },
                                       items: order.map((e) {
@@ -435,7 +454,17 @@ class _ImmobilesListState extends State<ImmobilesList> {
                   setState(() {
                     filters.page--;
                     dev.log(filters.page.toString());
-                    getImmobiles = widget.controller.getImmobiles(filters);
+                    if(dropOrder.value == "Menor Preço"){
+                      getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                        list.sort((a, b) => a.price.compareTo(b.price));
+                        return list;
+                      });
+                    } else{
+                      getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                        list.sort((a, b) => b.price.compareTo(a.price));
+                        return list;
+                      });
+                    }
                   });
                 },
                 child: Text('Anterior'),
@@ -453,7 +482,17 @@ class _ImmobilesListState extends State<ImmobilesList> {
                   setState(() {
                     filters.page++;
                     dev.log(filters.page.toString());
-                    getImmobiles = widget.controller.getImmobiles(filters);
+                    if(dropOrder.value == "Menor Preço"){
+                      getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                        list.sort((a, b) => a.price.compareTo(b.price));
+                        return list;
+                      });
+                    } else{
+                      getImmobiles = widget.controller.getImmobiles(filters).then((list) {
+                        list.sort((a, b) => b.price.compareTo(a.price));
+                        return list;
+                      });
+                    }
                   });
                 },
                 child: Text('Próxima'),
