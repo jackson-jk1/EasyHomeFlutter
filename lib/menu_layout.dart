@@ -104,7 +104,7 @@ class MenuDashboardPage extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.contacts),
-            title: const Text('Contacts',
+            title: const Text('Contatos',
                 style: TextStyle(color: Colors.white)),
             onTap: () => {Get.offAllNamed(AppRoutes.contacts)},
           ),
