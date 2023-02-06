@@ -1,4 +1,5 @@
 import 'package:easy_home_app/controllers/user_controller.dart';
+import '../../../controllers/notification_controller.dart';
 import '../../../models/notification_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,7 @@ import 'dart:developer' as dev;
 
 class NotificationViewModel extends GetxController {
 
-   final UserController injectedController;
+   final NotificationController injectedController;
    NotificationViewModel({required this.injectedController});
 
 

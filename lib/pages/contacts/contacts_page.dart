@@ -1,5 +1,5 @@
 import 'package:easy_home_app/pages/contacts/view_models/contacts_view_model.dart';
-import 'package:easy_home_app/pages/contacts/widgets/list_Contacts.dart';
+import 'package:easy_home_app/pages/contacts/widgets/list_contacts.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

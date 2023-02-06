@@ -166,55 +166,46 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                     ),
                                                   );
                                                 }
-                                                if(snapshot.data?.isEmpty == false){
+                                                if (snapshot.data?.isEmpty == false) {
                                                   dev.log(snapshot.data.toString());
-                                                  return
-                                                    Expanded(
-                                                     child: ListView.builder(
+                                                  return Expanded(
+                                                    child: ListView.builder(
                                                       shrinkWrap: true,
                                                       itemCount: snapshot.data?.length,
-                                                      itemBuilder: (context, index){
-                                                          List<User> lista = snapshot.data!;
-                                                          User u = lista[index];
-                                                          return ListTile(
-                                                            leading: ClipOval(
-                                                              child: Image.network(
-                                                                u.image,
-                                                                width: 40,
-                                                                height: 40,
-                                                                fit: BoxFit.cover,
-                                                                errorBuilder: (context, error, stackTrace) {
-                                                                  return Image.asset(
-                                                                    'imagens/sem_imagem.png',
-                                                                    width: 40,
-                                                                    height: 40,
-                                                                    fit: BoxFit.cover,
-                                                                  );
-                                                                },
-                                                              ),
+                                                      itemBuilder: (context, index) {
+                                                        List<User> lista = snapshot.data!;
+                                                        User u = lista[index];
+                                                        dev.log(u.image);
+                                                        return ListTile(
+                                                          leading: ClipOval(
+                                                            child: Image.network(
+                                                              u.image,
+                                                              width: 40,
+                                                              height: 40,
+                                                              fit: BoxFit.cover,
                                                             ),
-                                                            title:  Text(
-                                                              //"Telefone: " + u.cellPhone,
-                                                              u.name,
-                                                              style: TextStyle(
-                                                                  color: Colors.white,
-                                                                  fontSize: 20
-
-                                                              ),
+                                                          ),
+                                                          title: Text(
+                                                            u.name,
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 20
                                                             ),
-                                                            trailing:
-                                                            IconButton(
+                                                          ),
+                                                          trailing: IconButton(
                                                             iconSize: 22,
-                                                            icon: Icon(Icons.chat_bubble_outline , color: AppColors.white),
-                                                                onPressed: () async {
-                                                                  var contact = "+55" + u.cellPhone;
-                                                                  var androidUrl = "whatsapp://send?phone=$contact";
-                                                                  await launchUrl(Uri.parse(androidUrl));
-                                                             },
-                                                           )
-                                                          );
-                                                      }
-                                                    ));
+                                                            icon: Icon(
+                                                                Icons.person_add_alt_rounded,
+                                                                color: AppColors.white
+                                                            ),
+                                                            onPressed: () async {
+                                                              widget.controller.sendInvitation(context, u.id);
+                                                            },
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  );
                                                 }
                                                 return ListTile(
                                                   leading: ClipOval(
@@ -223,14 +214,6 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                                                       width: 40,
                                                       height: 40,
                                                       fit: BoxFit.cover,
-                                                      errorBuilder: (context, error, stackTrace) {
-                                                        return Image.asset(
-                                                          'imagens/sem_imagem.png',
-                                                          width: 40,
-                                                          height: 40,
-                                                          fit: BoxFit.cover,
-                                                        );
-                                                      },
                                                     ),
                                                   ),
                                                   title: const Text(

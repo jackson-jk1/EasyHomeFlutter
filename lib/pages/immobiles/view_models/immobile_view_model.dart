@@ -9,6 +9,8 @@ import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:developer' as dev;
 
+import '../../contacts/widgets/profile_contact.dart';
+
 class ImmobileViewModel extends GetxController {
 
   final ImmobileController injectedImmobileController;
@@ -74,6 +76,18 @@ class ImmobileViewModel extends GetxController {
   }
 
   sendInvitation(BuildContext context, int contatoId) async {
+    var verify = await injectedImmobileController.getContact(contatoId);
+    dev.log(verify.id.toString());
+    if(verify.id > 0){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ContactsProfile(
+            user: verify,
+          ),
+        ),
+      );
+    }
     final response = await injectedImmobileController.sendInvitation(contatoId);
     if (response.statusCode == 201) {
       success(context, response.response);

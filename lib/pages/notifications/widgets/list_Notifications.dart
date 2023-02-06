@@ -163,13 +163,17 @@ class _NotificationsListState extends State<NotificationsList> {
                         );
                       }
                       return Container(
-                        child: ListTile(
-                          title: Text(
-                            'Sem notificações no momento',
+                        margin: const EdgeInsets.fromLTRB(5, 5, 5, 0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: AppColors.yellow,
+                              width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const ListTile(
+                          title:Text(
+                             "Sem notificações no momento",
                             style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20
-                            ),
+                                color: Colors.white, fontSize: 18),
                           ),
                         ),
                       );

@@ -15,20 +15,20 @@ class MenuDashboardPage extends StatelessWidget {
     final HttpClient injectedHttp = new HttpClient();
     final StorageKeys injectedStorage = new StorageKeys();
 
-    Future<int> verifyNotification() async {
+    Future<bool> verifyNotification() async {
       String? retorno = await injectedStorage.readToken();
       final response = await injectedHttp.get(
-          url: "${injectedHttp.apiUrl()}/v1/user/listNotification",
+          url: "${injectedHttp.apiUrl()}/v1/notification/verifyNotification",
           header: {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
             'Authorization': 'Bearer ${retorno}'
           }
       );
-      var tagObjsJson = response.body['data'].toString();
-      dev.log(tagObjsJson);
-      return tagObjsJson == "[]" ?  0 :  1;
+      var tagObjsJson = response.body['data']['Response'].toString() as bool;
+      return tagObjsJson;
     }
+
     return Drawer(
       backgroundColor: AppColors.menuBar,
       child: ListView(
@@ -77,15 +77,15 @@ class MenuDashboardPage extends StatelessWidget {
                 style: TextStyle(color: Colors.white)),
             onTap: () => {Get.offAllNamed(AppRoutes.favorite)},
           ),
-          FutureBuilder<int>(
+          FutureBuilder<bool>(
             future: verifyNotification(),
-            builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
               if (snapshot.hasData) {
                 return ListTile(
-                  leading: snapshot.data == 0
+                  leading: snapshot.data == false
                       ? const Icon(Icons.notifications)
                       : const Icon(Icons.notification_add, color: Color(0xdef59e16)),
-                  title: snapshot.data == 0
+                  title: snapshot.data == false
                       ? const Text('Notificações',
                       style: TextStyle(color: Colors.white))
                       : const Text('Notificações',
@@ -93,7 +93,12 @@ class MenuDashboardPage extends StatelessWidget {
                   onTap: () => Get.offAllNamed(AppRoutes.notifications),
                 );
               } else {
-                return const CircularProgressIndicator();
+                return ListTile(
+                  leading: const Icon(Icons.notifications),
+                  title: const Text('Notificações',
+                      style: TextStyle(color: Colors.white)),
+                  onTap: () => Get.offAllNamed(AppRoutes.notifications),
+                );
               }
             },
           ),

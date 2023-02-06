@@ -141,6 +141,23 @@ class UserController {
     }
   }
 
+  Future<User> getContact(int contactId) async {
+    try {
+      String? retorno = await injectedStorage.readToken();
+      final response = await injectedHttp.get(
+          url: "${injectedHttp.apiUrl()}/v1/user/${contactId}",
+          header: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${retorno}',
+          });
+
+      return User.fromJson(response.body);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   String? validateEmail(String? email) {
     if (email == null || email.isEmpty)
       return "Campo Email não pode ser nulo";
@@ -149,6 +166,13 @@ class UserController {
     var emailRegExp = RegExp(emailPattern);
     if (!emailRegExp.hasMatch(email)) {
       return "Insira um email válido";
+    }
+    return null;
+  }
+
+  String? validatePasswordLogin(String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Campo senha não pode ser nulo';
     }
     return null;
   }
@@ -182,68 +206,6 @@ class UserController {
       return 'Campo Nome não pode ser nulo';
     }
     if (name.length < 6) return 'Nome invalido';
-  }
-
-  Future<List<Notify>> getNotifications() async{
-      String? retorno = await injectedStorage.readToken();
-      final response = await injectedHttp.get(
-          url: "${injectedHttp.apiUrl()}/v1/user/listNotification",
-      header: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': 'Bearer ${retorno}'
-       }
-      );
-      var tagObjsJson = response.body['data']  as List;
-      dev.log(response.body['data'].toString());
-
-      List<Notify> notifications = tagObjsJson.map((not) => Notify.fromJson(not)).toList();
-      return notifications;
-  }
-
-  void readNotifications() async {
-    String? retorno = await injectedStorage.readToken();
-    await injectedHttp.put(
-        url: "${injectedHttp.apiUrl()}/v1/user/readNotification",
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ${retorno}'
-        },
-      body: {}
-    );
-  }
-
-  Future<GenericResponse> addContact(int contatoId, int notId) async {
-    String? retorno = await injectedStorage.readToken();
-    final response = await injectedHttp.post(
-        url: "${injectedHttp.apiUrl()}/v1/user/addContact/${contatoId}/${notId}",
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ${retorno}'
-        },
-        body: {}
-    );
-    var tagObjsJson = response.body['data'];
-    dev.log(response.body['data'].toString());
-    return GenericResponse.fromJson(tagObjsJson);
-  }
-
-  recuseInvitation(int contatoId, int notId) async {
-    String? retorno = await injectedStorage.readToken();
-    final response = await injectedHttp.post(
-        url: "${injectedHttp.apiUrl()}/v1/user/recuseInvitation/${contatoId}/${notId}",
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': 'Bearer ${retorno}'
-        },
-        body: {}
-    );
-    var tagObjsJson = response.body['data'];
-    dev.log(response.body['data'].toString());
-    return GenericResponse.fromJson(tagObjsJson);
   }
 
    Future<List<Contact>>  listContacts() async{

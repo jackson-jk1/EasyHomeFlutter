@@ -91,6 +91,10 @@ class LoginViewModel extends GetxController {
     return injectedLoginRegisterController.validateName(nomeController.text);
   }
 
+  String? validatePasswordLogin(String? cpf) {
+    return injectedLoginRegisterController.validatePasswordLogin(passwordController.text);
+  }
+
   String? validatePassword(String? cpf) {
     return injectedLoginRegisterController.validatePassword(passwordController.text);
   }

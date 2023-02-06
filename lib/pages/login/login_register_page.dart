@@ -86,7 +86,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                   ),),
 
                                 obscureText: true,
-                                validator: (password) => controller.validatePassword(password),
+                                validator: (password) => controller.validatePasswordLogin(password),
                                 controller: controller.passwordController
                             ),
                             const SizedBox(

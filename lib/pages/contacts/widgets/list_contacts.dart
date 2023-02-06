@@ -68,9 +68,14 @@ class _ContactsListState extends State<ContactsList> {
                                         iconSize: 22,
                                         icon: Icon(Icons.chat_bubble_outline , color: AppColors.yellow),
                                         onPressed: () async {
-                                          var contact = "+55" + c.cellphone;
-                                          var androidUrl = "whatsapp://send?phone=$contact";
-                                          await launchUrl(Uri.parse(androidUrl));
+                                          var message = 'Mensagem Pronta';
+                                          var recipient = '55${c.cellphone}';
+                                          var url = 'https://api.whatsapp.com/send?phone=$recipient&text=$message';
+                                          if (await canLaunch(url)) {
+                                            await launch(url);
+                                          } else {
+                                            throw 'Não foi possível enviar a mensagem';
+                                          }
                                         },
                                       ),
                                       IconButton(
@@ -91,7 +96,13 @@ class _ContactsListState extends State<ContactsList> {
                   );
                 }
               }
-              return ListTile(
+              return
+                Container(
+                  margin: const EdgeInsets.fromLTRB(5, 10, 5, 0),
+                  decoration: BoxDecoration(
+                    border: Border(bottom: BorderSide(color: Colors.white24, width: 2)),
+                  ),
+                child: const ListTile(
                 title: Text(
                   'Você não possui contatos',
                   style: TextStyle(
@@ -99,8 +110,9 @@ class _ContactsListState extends State<ContactsList> {
                       fontSize: 20
                   ),
                 ),
-              );
-            }
+              )
+            );
+          }
         ),
       ),
     ],

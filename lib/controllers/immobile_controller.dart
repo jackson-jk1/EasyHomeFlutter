@@ -58,6 +58,7 @@ class ImmobileController {
     var tagObjsJson = response.body['data'];
     return tagObjsJson;
   }
+
   Future<int> addFavorite (int immId) async {
     String? retorno = await injectedStorage.readToken();
     final response = await injectedHttp.post(
@@ -104,6 +105,23 @@ class ImmobileController {
     var tagObjsJson = response.body['data'] as List;
     List<User> users = tagObjsJson.map((u) => User.fromJson(u)).toList();
     return users;
+  }
+
+  Future<User> getContact(int contactId) async {
+    try {
+      String? retorno = await injectedStorage.readToken();
+      final response = await injectedHttp.get(
+          url: "${injectedHttp.apiUrl()}/v1/user/${contactId}",
+          header: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${retorno}',
+          });
+
+      return User.fromJson(response.body);
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<List<Immobile>> getFavorites(Filters filters) async {

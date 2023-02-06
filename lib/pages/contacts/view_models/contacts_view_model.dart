@@ -20,4 +20,8 @@ class ContactViewModel extends GetxController {
     return await injectedContactController.listContacts();
   }
 
+  Future<User> getContact(int id) async {
+    return injectedContactController.getContact(id);
+  }
+
 }
