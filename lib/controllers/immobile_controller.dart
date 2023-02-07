@@ -107,7 +107,7 @@ class ImmobileController {
     return users;
   }
 
-  Future<User> getContact(int contactId) async {
+  Future<User?> getContact(int contactId) async {
     try {
       String? retorno = await injectedStorage.readToken();
       final response = await injectedHttp.get(
@@ -117,10 +117,9 @@ class ImmobileController {
             'Accept': 'application/json',
             'Authorization': 'Bearer ${retorno}',
           });
-
-      return User.fromJson(response.body);
+        return User.fromJson(response.body['data']);
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 
@@ -145,7 +144,7 @@ class ImmobileController {
   Future<GenericResponse> sendInvitation(int contatoId) async {
     String? retorno = await injectedStorage.readToken();
     final response = await injectedHttp.post(
-        url: "${injectedHttp.apiUrl()}/v1/user/sendInvitation/${contatoId}",
+        url: "${injectedHttp.apiUrl()}/v1/notification/sendInvitation/${contatoId}",
         header: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',

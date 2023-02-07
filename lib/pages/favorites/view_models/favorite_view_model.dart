@@ -50,8 +50,7 @@ class FavoriteViewModel extends GetxController {
    }
    sendInvitation(BuildContext context, int contatoId) async {
      var verify = await injectedImmobileController.getContact(contatoId);
-     dev.log(verify.id.toString());
-     if(verify.id > 0){
+     if(verify != null){
        Navigator.push(
          context,
          MaterialPageRoute(
@@ -60,6 +59,7 @@ class FavoriteViewModel extends GetxController {
            ),
          ),
        );
+       return;
      }
      final response = await injectedImmobileController.sendInvitation(contatoId);
      if (response.statusCode == 201) {

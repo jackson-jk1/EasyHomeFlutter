@@ -17,13 +17,6 @@ class NotificationViewModel extends GetxController {
      return await injectedController.getNotifications();
    }
 
-   Future<void> goZap (String telefone) async {
-      dev.log(telefone);
-     var link =  Uri.parse("https://wa.me/55${telefone}?text=Ola%2C%20vejo%20que%20compartilhamos%20interesse%20em%20um%20imovel%20em%20comum%2C%20gostaria%20de%20conversar%3F");
-     if (!await launchUrl(link)) {
-       throw 'Could not launch $telefone';
-     }
-   }
 
   void readNotifications() {
       injectedController.readNotifications();

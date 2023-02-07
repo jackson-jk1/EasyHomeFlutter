@@ -1,4 +1,4 @@
 class Constants {
   static const String apiUrl =
-      'https://8a99-138-118-169-27.sa.ngrok.io';
+      'https://7207-138-118-169-27.sa.ngrok.io';
 }
