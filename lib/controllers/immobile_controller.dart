@@ -71,7 +71,6 @@ class ImmobileController {
     );
 
     var tagObjsJson = response.body['data']['Statuscode'];
-    dev.log(tagObjsJson.toString());
     return tagObjsJson;
   }
 
@@ -87,7 +86,6 @@ class ImmobileController {
     );
 
     var tagObjsJson = response.body['data']['Statuscode'];
-    dev.log(tagObjsJson.toString());
     return tagObjsJson;
   }
 
@@ -136,7 +134,6 @@ class ImmobileController {
 
 
     var tagObjsJson = response.body['data']  as List;
-    dev.log(response.body['data'].toString());
     List<Immobile> immobiles = tagObjsJson.map((imm) => Immobile.fromJson(imm)).toList();
     return immobiles;
   }
@@ -153,7 +150,6 @@ class ImmobileController {
         body: {}
     );
     var tagObjsJson = response.body['data'];
-    dev.log(response.body['data'].toString());
     return GenericResponse.fromJson(tagObjsJson);
   }
 

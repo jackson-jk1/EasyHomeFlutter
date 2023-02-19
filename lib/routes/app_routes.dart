@@ -14,4 +14,5 @@ abstract class AppRoutes {
   static const splash = '/splash';
   static const notifications = '/notifications';
   static const contacts = '/contacts';
+  static const terms = '/terms';
 }

@@ -45,13 +45,10 @@ class BuildPage extends GetWidget<ProfileViewModel> {
       builder: (context, snapshot){
       User? user = snapshot.data;
       if(user == null){
+
+
       return Scaffold(
-          appBar: AppBar(
-            title: Text("Error"),
-          ),
-          body: Center(
-          child: Text("${snapshot.error}"),
-          ),
+            backgroundColor: AppColors.pages
           );
         }
         else{

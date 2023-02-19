@@ -86,7 +86,7 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                   ),),
 
                                 obscureText: true,
-                                validator: (password) => controller.validatePasswordLogin(password),
+                                validator: (password) => !controller.switchLogin.value ? controller.validatePasswordLogin(password) : controller.validatePassword(password) ,
                                 controller: controller.passwordController
                             ),
                             const SizedBox(
@@ -262,7 +262,24 @@ class LoginPage extends GetWidget<LoginViewModel>{
                                 child:
                                 Text(controller.switchLogin.value
                                     ? 'Cadastrar'
-                                    : 'Entrar'))
+                                    : 'Entrar')),
+                           Visibility(
+                             visible: controller.switchLogin.value,
+                             child:
+                            CheckboxListTile(
+                              title: const Text("Li e aceito os termos",
+                                  style: TextStyle(color: Colors.white)),
+                              value: controller.terms.value,
+                              onChanged: (_) => controller.changeSwitchTerms(),
+                            ),
+                           ),
+                            Visibility(
+                              visible: controller.switchLogin.value,
+                              child: InkWell(
+                                child: const Text('Termos de uso', style: TextStyle(color: Colors.lightBlueAccent, fontSize: 12),),
+                                onTap: () => { Get.offAllNamed(AppRoutes.terms)},
+                              ),
+                            ),
                           ],
                         ),
                     ),

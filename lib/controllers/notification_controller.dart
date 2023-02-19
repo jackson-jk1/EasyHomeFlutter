@@ -89,7 +89,6 @@ class NotificationController {
         'Authorization': 'Bearer ${retorno}'},
     );
 
-    dev.log(response.body.toString());
     var tagObjsJson = response.body['data'] as List;
 
     List<Contact> contacts = tagObjsJson.map((c) => Contact.fromJson(c)).toList();

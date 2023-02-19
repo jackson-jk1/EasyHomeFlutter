@@ -6,8 +6,6 @@ import 'package:easy_home_app/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer' as dev;
 
 import '../../contacts/widgets/profile_contact.dart';
 
@@ -38,7 +36,6 @@ class ImmobileViewModel extends GetxController {
         'Authorization': 'Bearer ${retorno}'},
     );
 
-    dev.log(response.body.toString());
     var tagObjsJson = response.body['data'] as List;
 
     List<User> users = tagObjsJson.map((u) => User.fromJson(u)).toList();

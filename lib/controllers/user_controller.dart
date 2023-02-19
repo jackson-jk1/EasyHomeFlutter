@@ -105,6 +105,22 @@ class UserController {
     }
   }
 
+
+  Future<int> removeContact (int contactId) async {
+    String? retorno = await injectedStorage.readToken();
+    final response = await injectedHttp.delete(
+        url: "${injectedHttp.apiUrl()}/v1/user/removeContact/${contactId}",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer ${retorno}'},
+        body: {}
+    );
+
+    var tagObjsJson = response.body['data']['Statuscode'];
+    return tagObjsJson;
+  }
+
   changePassword(Map<String, String> updatePassword) async{
     try {
       String? retorno = await injectedStorage.readToken();

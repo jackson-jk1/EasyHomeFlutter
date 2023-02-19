@@ -24,4 +24,32 @@ class ContactViewModel extends GetxController {
     return injectedContactController.getContact(id);
   }
 
+  removeContact(int contactId, BuildContext context) async {
+    var response = await injectedContactController.removeContact(contactId);
+    if (response != 200) {
+      errorRegister(context, "Erro ao remover Contato");
+    }
+  }
+
+  Future<String?> errorRegister(BuildContext context, String? response) {
+    return showDialog<String>(
+      context: context,
+      builder: (BuildContext context) =>
+          AlertDialog(
+            title: const Text('Atenção!'),
+            content: response != null
+                ? Text(response)
+                : const Text(
+                'Erro Interno tente novamente mais tarde'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () =>
+                {Navigator.pop(context, 'OK'),
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+    );
+  }
 }

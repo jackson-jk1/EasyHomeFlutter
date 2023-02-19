@@ -18,13 +18,15 @@ import '../pages/Reset_password/reset_pass_binding.dart';
 import '../pages/Reset_password/reset_pass_page.dart';
 import '../pages/favorites/bidings/favorite_list_binding.dart';
 import '../pages/immobiles/bidings/immobiles_list_binding.dart';
+import '../pages/terms/terms_page.dart';
+import '../widgets/terms_widget.dart';
 import 'app_routes.dart';
 
 class AppPages {
   static final pages = [
     GetPage(
         name: AppRoutes.login,
-        page: () => LoginPage(),
+        page: () => const LoginPage(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 500),
         binding: LoginBinding(),
@@ -37,14 +39,14 @@ class AppPages {
     ),
     GetPage(
         name: AppRoutes.realEstateList,
-        page: () => ImmobilesPage(),
+        page: () => const ImmobilesPage(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 800),
         binding: ImmobilesBinding()
     ),
     GetPage(
         name: AppRoutes.favorite,
-        page: () => FavoritePage(),
+        page: () => const FavoritePage(),
         transition: Transition.fade,
         transitionDuration: const Duration(milliseconds: 800),
         binding: FavoritesBinding(),
@@ -91,6 +93,13 @@ class AppPages {
       transition: Transition.fade,
       transitionDuration: const Duration(milliseconds: 500),
       binding: ContactsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.terms,
+      page: () =>  const TermsPage(),
+      transition: Transition.fade,
+      transitionDuration: const Duration(milliseconds: 500),
+      binding: null
     ),
   ];
 }

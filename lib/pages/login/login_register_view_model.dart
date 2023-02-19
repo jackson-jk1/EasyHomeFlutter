@@ -27,10 +27,17 @@ class LoginViewModel extends GetxController {
   File? images;
 
   RxBool switchLogin = false.obs;
+  RxBool terms = false.obs;
 
 
   changeSwitchLogin() =>
       switchLogin
+          .toggle()
+          .value;
+
+
+  changeSwitchTerms() =>
+      terms
           .toggle()
           .value;
 
@@ -124,31 +131,7 @@ class LoginViewModel extends GetxController {
     if (images == null) {
       errorImageRegister(context);
     }
-    else {
-      bool termsAccepted = await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Confirmação de termos"),
-            content: Text("Por favor aceite os termos de serviço"),
-            actions: <Widget>[
-              TextButton(
-                child: Text("Aceitar"),
-                onPressed: () {
-                  Navigator.of(context).pop(true);
-                },
-              ),
-              TextButton(
-                child: Text("Recusar"),
-                onPressed: () {
-                  Navigator.of(context).pop(false);
-                },
-              ),
-            ],
-          );
-        },
-      );
-      if (termsAccepted) {
+      if (terms.value) {
         registerNewUser(context, images!);
         try {} catch (e) {
           log("Erro ao enviar dados para a API");
@@ -248,4 +231,4 @@ class LoginViewModel extends GetxController {
           ),
     );
   }
-}
+

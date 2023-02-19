@@ -34,8 +34,7 @@ class _ContactsListState extends State<ContactsList> {
               if(snapshot.hasData){
                 List<Contact>? lista = snapshot.data;
                 if(snapshot.data?.isEmpty == false){
-                  return Expanded(
-                    child: ListView.builder(
+                    return ListView.builder(
                         shrinkWrap: true,
                         itemCount: lista!.length,
                         itemBuilder: (context, index){
@@ -86,14 +85,32 @@ class _ContactsListState extends State<ContactsList> {
                                           await launchUrl(Uri.parse(email));
                                         },
                                       ),
+                                      InkWell(
+                                        onTap: () async {
+                                         await widget.controller.removeContact(c.contactId, context);
+                                          setState(() {
+                                            getContacts = widget.controller.listContacts();
+
+                                          });
+                                        },
+                                        child: Container(
+                                          height: 30,
+                                          width: 30,
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: AppColors.yellow.withOpacity(0.4), width:2,),
+                                              borderRadius: BorderRadius.circular(15)
+                                          ),
+                                          child:
+                                          Icon(Icons.delete,color: AppColors.yellow,),
+                                        ),
+                                      )
                                     ],
                                   )
 
                               )
                           );
                         }
-                    ),
-                  );
+                    );
                 }
               }
               return

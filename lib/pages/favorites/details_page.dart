@@ -2,11 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:easy_home_app/models/Immobile_model.dart';
 import 'package:easy_home_app/models/user_model.dart';
 import 'package:easy_home_app/pages/favorites/view_models/favorite_view_model.dart';
-import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'dart:developer' as dev;
 
 import '../../menu_layout.dart';
 import '../../widgets/web_view.dart';
@@ -120,161 +117,162 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                       bottom: 30,
                     ),
 
-                    child: Center(
-                      child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor : MaterialStateProperty.all(AppColors.yellow)
-                          ),
-                          onPressed: (){
-                            showModalBottomSheet<void>(
-                                context: context,
-                                builder: (context) {
-                                  Size size = MediaQuery.of(context).size;
-                                  return SingleChildScrollView(
-                                    padding: EdgeInsets.only(
-                                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                      Container(
-                                       decoration: BoxDecoration(
-                                        color: AppColors.yellow
-                                         ),
-                                      padding: EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                                      child:
-                                           FutureBuilder<List<User>>(
-                                              future: getinterested,
-                                              builder: (context, snapshot){
-                                                if(snapshot.hasError){
-                                                   return ListTile(
-                                                    leading: ClipOval(
-                                                      child: Image.asset(
-                                                        'imagens/User.png',
-                                                        width: 40,
-                                                        height: 40,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    title: const Text(
-                                                        'Sem interessados no momento',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20
-
-                                                      ),
-                                                    ),
-                                                  );
-                                                }
-                                                if (snapshot.data?.isEmpty == false) {
-                                                  dev.log(snapshot.data.toString());
-                                                  return Expanded(
-                                                    child: ListView.builder(
-                                                      shrinkWrap: true,
-                                                      itemCount: snapshot.data?.length,
-                                                      itemBuilder: (context, index) {
-                                                        List<User> lista = snapshot.data!;
-                                                        User u = lista[index];
-                                                        dev.log(u.image);
-                                                        return ListTile(
-                                                          leading: ClipOval(
-                                                            child: Image.network(
-                                                              u.image,
-                                                              width: 40,
-                                                              height: 40,
-                                                              fit: BoxFit.cover,
-                                                            ),
-                                                          ),
-                                                          title: Text(
-                                                            u.name,
-                                                            style: TextStyle(
-                                                                color: Colors.white,
-                                                                fontSize: 20
-                                                            ),
-                                                          ),
-                                                          trailing: IconButton(
-                                                            iconSize: 22,
-                                                            icon: Icon(
-                                                                Icons.person_add_alt_rounded,
-                                                                color: AppColors.white
-                                                            ),
-                                                            onPressed: () async {
-                                                              widget.controller.sendInvitation(context, u.id);
-                                                            },
-                                                          ),
-                                                        );
-                                                      },
-                                                    ),
-                                                  );
-                                                }
+                  child: Center(
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(AppColors.yellow),
+                      ),
+                      onPressed: () {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (context) {
+                            return SingleChildScrollView(
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context).viewInsets.bottom),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.yellow,
+                                    ),
+                                    padding:
+                                    EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                                    child: FutureBuilder<List<User>>(
+                                      future: getinterested,
+                                      builder: (context, snapshot) {
+                                        if (snapshot.hasError) {
+                                          return ListTile(
+                                            leading: ClipOval(
+                                              child: Image.asset(
+                                                'imagens/User.png',
+                                                width: 40,
+                                                height: 40,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                            title: const Text(
+                                              'Sem interessados no momento',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                        if (snapshot.data?.isEmpty == false) {
+                                          return ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot.data?.length,
+                                              itemBuilder: (context, index) {
+                                                List<User> lista = snapshot.data!;
+                                                User u = lista[index];
                                                 return ListTile(
                                                   leading: ClipOval(
-                                                    child: Image.asset(
-                                                      'imagens/User.png',
+                                                    child: Image.network(
+                                                      u.image,
                                                       width: 40,
                                                       height: 40,
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                  title: const Text(
-                                                    'Sem interessados no momento',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20
+                                                  title: Text(
+                                                    u.name,
+                                                    style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 20,
                                                     ),
                                                   ),
+                                                  trailing: IconButton(
+                                                    iconSize: 22,
+                                                    icon: Icon(
+                                                      Icons.person_add_alt_rounded,
+                                                      color: AppColors.white,
+                                                    ),
+                                                    onPressed: () async {
+                                                      widget.controller
+                                                          .sendInvitation(
+                                                          context, u.id);
+                                                    },
+                                                  ),
                                                 );
-                                              }
+                                              },
+                                            );
+                                        }
+                                        return ListTile(
+                                          leading: ClipOval(
+                                            child: Image.asset(
+                                              'imagens/User.png',
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                       )
-                                     ]
-                                    )
-                                  );
-                                }
-                             );
-                          }, child: Text(
-                          "Ver lista de interessados",
-                          style: TextStyle(color: AppColors.white, fontSize: 25))
-                      ),
-                    )),
-                Padding(
-                  padding: EdgeInsets.only(
+                                          title: const Text(
+                                            'Sem interessados no momento',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      child: Text("Ver lista de interessados",
+                          style: TextStyle(color: AppColors.white, fontSize: 25)),
+                    ),
+                  ),
+                ),
+                 Expanded(
+                    flex: 1,
+                    child:
+                    Padding(
+                    padding: const EdgeInsets.only(
                     bottom: 30,
                     left: 30,
                     right: 30,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
+                    ),
+                    child:
+                    Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "R\$ " + widget.imm.price.toString(),
-                            style: TextStyle(
+                            "R\$ : " + widget.imm.price.toString().substring(0, widget.imm.price.toString().indexOf('.')),
+                            style: const TextStyle(
                               fontSize: 28,
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            widget.imm.address.trim().replaceAll(",", "\n"),
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.white,
+                          FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              widget.imm.address.trim(),
+                              style: const TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ],
-                      ),
-                    ],
+                      )
+                    ),
                   ),
-                ),
-                Padding(
+
+                const Padding(
                   padding:
-                  const EdgeInsets.only(left: 30, bottom: 30),
+                  EdgeInsets.only(left: 30, bottom: 30),
                   child: Text(
                     'Detalhes do imóvel:',
                     style: TextStyle(
@@ -288,10 +286,10 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                   height: 130,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(
+                        padding:const EdgeInsets.only(
                           left: 30,
                           bottom: 30,
                         ),
@@ -309,16 +307,16 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                             children: [
                               Text(
                                 widget.imm.rooms.toString(),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 10,
                               ),
-                              Text(
+                              const  Text(
                                 'Quartos',
                                 style: TextStyle(
                                   color: Colors.white,
@@ -334,14 +332,14 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding:const EdgeInsets.only(
                     left: 30,
                     right: 30,
                     bottom: 30,
                   ),
                   child: Text(
                     widget.imm.desc,
-                    style: TextStyle(
+                    style:const TextStyle(
                       color: Colors.white,
                       height: 1.5,
                     ),
@@ -349,7 +347,7 @@ class _DetailsScreenState extends State<DetailsFavoriteScreen> {
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.only(
+                    padding:const EdgeInsets.only(
                       left: 30,
                       right: 30,
                       bottom: 30 * 4,

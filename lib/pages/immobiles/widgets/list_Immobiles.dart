@@ -5,7 +5,7 @@ import 'package:easy_home_app/pages/immobiles/details_page.dart';
 import 'package:easy_home_app/pages/immobiles/view_models/immobile_view_model.dart';
 import 'package:easy_home_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as dev;
+
 
 class ImmobilesList extends StatefulWidget {
   final ImmobileViewModel controller;
@@ -453,7 +453,6 @@ class _ImmobilesListState extends State<ImmobilesList> {
                   }
                   setState(() {
                     filters.page--;
-                    dev.log(filters.page.toString());
                     if(dropOrder.value == "Menor Preço"){
                       getImmobiles = widget.controller.getImmobiles(filters).then((list) {
                         list.sort((a, b) => a.price.compareTo(b.price));
@@ -481,7 +480,7 @@ class _ImmobilesListState extends State<ImmobilesList> {
                   }
                   setState(() {
                     filters.page++;
-                    dev.log(filters.page.toString());
+
                     if(dropOrder.value == "Menor Preço"){
                       getImmobiles = widget.controller.getImmobiles(filters).then((list) {
                         list.sort((a, b) => a.price.compareTo(b.price));
